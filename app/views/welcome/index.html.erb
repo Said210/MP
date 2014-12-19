@@ -1,0 +1,28 @@
+<h1>Welcome#index</h1>
+<p>Find me in app/views/welcome/index.html.erb</p>
+
+<% @u.each do |i| %>
+	<%= i.username %>
+<%end%>
+
+<br>
+
+<div ng-controller="Albums">
+		
+		<form action="#">
+			<input type="text" id="LookFor">
+			<input type="button" ng-click="buscar()">
+		</form>
+		
+		<div ng-repeat="i in Spotify_albums.items">
+			<img src="{{i.images[0].url}}" width="50px" alt="">
+			{{i.name}} <br>
+			<span class="link" ng-click="showTracks(i.id)">Mostrar e.e</span>
+		</div>
+		
+		<div ng-repeat="j in Spotify_album_tracks">
+			{{j.name}} <br>
+			<span class="link" ng-click="playPreview(j.preview_url)">Play</span>
+		</div>
+
+	</div>
