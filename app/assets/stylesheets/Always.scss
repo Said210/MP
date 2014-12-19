@@ -1,0 +1,20 @@
+@import url(http://fonts.googleapis.com/css?family=Oxygen:700,400);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,900);
+body{
+	background-color: #e0e0e0;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	padding: 0px;
+	margin: 0px;
+}
+button{
+	background-color: #42a5f5;
+	color:#fff;
+	width: 300px;
+	height: 50px;
+	font-size: 20px;
+	outline: none;
+	border:none;
+	border-radius: 2px;
+	cursor: pointer;
+}

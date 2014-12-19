@@ -1,0 +1,33 @@
+.menu{
+	background-color: rgba(30,30,30,.5);
+	color:#fff;
+	font-weight: 400;
+	height: 50px;
+	padding-top: 25px;
+	position: fixed;
+	width: 100%;
+	top:0px;
+	left: 0px;
+	z-index:2;
+	.menu_item{
+		display: inline-block;
+		text-transform: capitalize;
+		margin-left: 10px;
+		margin-right: 10px;
+		cursor: pointer;
+		float:right;
+	}
+	.menu_main{
+		display: inline-block;
+		text-transform: capitalize;
+		margin-left: 10px;
+		margin-right: 10px;
+		cursor: pointer;
+		position: absolute;
+		left:20px;
+		top:15px;
+		font-family: 'Oxygen', sans-serif;
+		font-weight: 700;
+		font-size: 30px;
+	}
+}

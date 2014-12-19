@@ -10,10 +10,18 @@
 </head>
 <body>
 
+<div class="menu">
+	<div class="menu_main">Musicpoint</div>
+
+	<div class="menu_item">Información</div>
+	<div class="menu_item">Social</div>
+	<div class="menu_item">Empezar ahora</div>
+</div>
+
 <%= yield %>
 
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
+<div class="notice"><%= notice %></div>
+<div class="alert"><%= alert %></div>
 
 
 <audio controls id="ply" preload="auto" src=""></audio>
