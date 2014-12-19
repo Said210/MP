@@ -29,6 +29,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 .section2{
 	background-image: url("beach_party_silhouettes.jpg");
 	top: 100%;
+	z-index:2;
 }
 .section3{
 	background-image: url("lifestyle-listen-free-lg.jpg");
@@ -39,7 +40,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 	color:#444;
 	min-height: 400px;
 	position: absolute;
-	z-index:1;
+	z-index:3;
 	padding-top: 50px; 
 	padding-bottom: 50px;
 	padding-right: 100px;

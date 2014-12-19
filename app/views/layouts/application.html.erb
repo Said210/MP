@@ -11,11 +11,13 @@
 <body>
 
 <div class="menu">
-	<div class="menu_main">Musicpoint</div>
+	<div class="menu_main"><%= link_to "Musicpoint", root_path%></div>
 
 	<div class="menu_item">Información</div>
 	<div class="menu_item">Social</div>
-	<div class="menu_item">Empezar ahora</div>
+	<div class="menu_item"><%=link_to "Empezar ahora", new_user_session_path %></div>
+
+	<div class="menu_item"><%=link_to "Salir", destroy_user_session_path, method: :delete %></div>
 </div>
 
 <%= yield %>
