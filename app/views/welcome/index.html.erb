@@ -29,7 +29,14 @@
 -->
 
 <script type="text/javascript">
-	
+	var ready;
+	ready = function() {
+		$(window).scrollTop(1);
+	};
+
+	$(document).ready(ready);
+	$(document).on('page:load', ready);
+
 	$(window).scroll(function (event) {
 	    $(".section").each(function(){
 	    	doSc($(this),82);
@@ -40,9 +47,11 @@
 	});
 	function doSc(elem, q){
 		var scroll = $(window).scrollTop();
+		if(scroll==0){scroll=1};
+
 		var space=$(elem).data("place");
 		var speed=$(elem).data("speed");
-		console.log(speed);
+		speed=0;
 		if(speed==undefined){speed=q;}else{}
 		if(space<2){
 			var s="calc("+100*space+"% + ";
@@ -66,15 +75,12 @@
 		<h3>Share your good taste</h3>
 	</div>
 </div>
-<div class="middle middle1" data-place=".95">
+<div class="middle middle1" data-place="1.2">
 	<h1>Conoce nuevas personas</h1>
 	<h3>Conoce nuevas personas y sigue en contacto con los viejos conocidos descubriendo los gustos de las personas &gr;3</h3>
 </div>
 <div class="section2 section" data-place="1" data-speed="10">
-	<div id="insider">
-		<h1>Musicpoint2</h1>
-		<h3>Share your good taste</h3>
-	</div>
+
 </div>
 <div class="section3 section" data-place="2" data-speed="100">
 	<div id="insider">
