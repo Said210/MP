@@ -1,6 +1,6 @@
 var aplicacion = angular.module('appl', []);
 
-aplicacion.controller('Albums', function($scope, $http) {
+aplicacion.controller('Albums', function($scope, $http ) {
 
     $scope._id = null;
     $scope.nombre = '';
@@ -30,6 +30,7 @@ aplicacion.controller('Albums', function($scope, $http) {
         }).success(function(data) {
             if(typeof(data) == 'object'){
                 $scope.Spotify_album_tracks = data.tracks.items;
+                setTimeout(function() {setURLs(); alert("preOne")}, 3000);
             }else{
                 alert('Error al intentar recuperar los datos de spotify 1.');
             }

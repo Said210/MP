@@ -1,0 +1,35 @@
+<script>
+	
+	function setURLs(){
+		$(".playButton").each(function(){
+	    	play_Btn($(this));
+	    });
+	}
+	function play_Btn(elem){
+		$(elem).attr("src","https://embed.spotify.com/?uri="+$(elem).data("uris"));
+	}
+
+</script>
+<br><br><br>
+<iframe src="https://embed.spotify.com/?uri=spotify:track:4th1RQAelzqgY7wL53UGQt" width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+
+
+<div ng-controller="Albums">
+		
+		<form action="#">
+			<input type="text" id="LookFor">
+			<input type="button" ng-click="buscar()">
+		</form>
+		
+		<div ng-repeat="i in Spotify_albums.items">
+			<img src="{{i.images[0].url}}" width="50px" alt="">
+			{{i.name}} <br>
+			<span class="link" ng-click="showTracks(i.id)">Mostrar e.e</span>
+		</div>
+		
+		<div ng-repeat="j in Spotify_album_tracks">
+			<iframe class="playButton" src="#" data-uris="{{j.uri}}" ng-name="{{j.name}}" width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+			<h3>Or Listen the preview</h3><button ng-click="playPreview(j.preview_url)">Play</button>
+		</div>
+
+	</div>
