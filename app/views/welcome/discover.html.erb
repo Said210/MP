@@ -182,7 +182,7 @@ function update_cover(){
   },1000, function(){
     $("#"+li_uid).html(img);
     $("#"+li_uid+" img").css("opacity","0");
-    $("#"+li_uid).attr("onClick","playPreview(\""+imgs[rand].track+"\");");
+    $("#"+li_uid).attr("onClick","playPreview(\""+imgs[rand2].track+"\");");
     $("#"+li_uid+" img").animate({
       opacity: 1
     },1000);
