@@ -3,6 +3,9 @@ class WelcomeController < ApplicationController
   	@u = User.all()
   end
   def test
-  	
+
+  end
+  def discover
+
   end
 end
