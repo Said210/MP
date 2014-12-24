@@ -1,0 +1,11 @@
+[data-dropdown]
+  z-index: 1
+
+  &:hover ul
+    opacity: 1
+    max-height: 100%
+    max-width: 100%
+    visibility: visible
+    +transform(translateY(0))
+    +transition-delay(0s)
+    z-index: -1

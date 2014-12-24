@@ -1,0 +1,35 @@
+@import bourbon
+
+@import font-awesome
+
+@import util
+@import elements/elements
+
+*, *:after, *:before
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+
+html
+  height: 100%
+
+body
+  height: 100%
+  margin: 0
+  padding-top: $topbar-height
+  font-family: sans-serif
+  text-rendering: optimizeLegibility
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+
+  &.no-spaces
+    padding: 0 !important
+    .container
+      padding: 0 !important
+
+a
+  text-decoration: none
+  outline: none
+
+.container
+  padding: 1rem 0

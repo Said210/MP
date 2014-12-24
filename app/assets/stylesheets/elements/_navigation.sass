@@ -1,0 +1,71 @@
+header.topbar
+  +position(fixed, 0px null null 0px)
+  width: 100%
+  height: $topbar-height
+  background-color: rgba(#37474f, 0.98)
+  z-index: 20
+
+span.logo
+  +position(absolute, 0px null null 0px)
+
+  a
+    display: inline-block
+    +size($topbar-height)
+    background: image-url('mp-logo.png') no-repeat center / #{$topbar-height * 0.8}
+
+ul.main-navigation-links, ul.user-navigation-links
+  +inline-list
+  height: 100%
+  line-height: $topbar-height
+
+  &>li>a
+    color: #EEE
+    padding: 0 0.5rem
+
+ul.main-navigation-links
+  float: left
+
+ul.user-navigation-links
+  float: right
+
+nav.main-navigation
+  width: 100%
+  height: $topbar-height
+  float: left
+  padding-left: $topbar-height
+
+.user-options-dropdown
+  +no-bullets
+  visibility: hidden
+  +position(absolute, $topbar-height 0px nul null)
+  background-color: darken(#37474f, 5%)
+  line-height: 1.5
+  overflow: hidden
+  opacity: 0
+  z-index: -1
+  +transform(translateY(-5px))
+  +transition(200ms ease-in-out, visibility 0s 300ms)
+
+  &>li>a
+    display: inline-block
+    min-width: 100px
+    color: #EEE
+    padding: 0.5rem 1rem
+
+.user-dropdown
+  display: inline-block
+
+  i.fa
+    margin-right: 0.5rem
+
+.user-pic
+  display: inline-block
+  width: 50px
+  height: 100%
+
+  img
+    width: 100%
+    vertical-align: middle
+    border-radius: 5px
+
+
