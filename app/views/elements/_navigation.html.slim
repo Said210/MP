@@ -1,0 +1,22 @@
+header.topbar
+  span.logo = link_to root_path
+  nav.main-navigation
+    ul.main-navigation-links
+      li = link_to "Musicpoint", root_path
+      li = link_to "Información", root_path
+      li = link_to "Social", root_path
+      li = link_to "Empezar ahora", new_user_session_path
+    ul.user-navigation-links
+      - if true#user_signed_in?
+        li.user-dropdown[data-dropdown]
+          a href="javascript: void(0)"
+            i.fa.fa-caret-down
+            span.user-pic = image_tag 'annie.jpg'
+          ul.user-options-dropdown
+            li = link_to  "Annie Clark", root_path
+            li = link_to destroy_user_session_path, method: :delete do
+              i.fa.fa-sign-out
+              span  Salir
+      - else
+        li = link_to "login", new_user_session_path
+        li = link_to "signup", new_user_registration_path
