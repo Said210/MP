@@ -7,7 +7,7 @@ header.topbar
       li = link_to "Social", root_path
       li = link_to "Empezar ahora", new_user_session_path
     ul.user-navigation-links
-      - if true#user_signed_in?
+      - if user_signed_in?
         li.user-dropdown[data-dropdown]
           a href="javascript: void(0)"
             i.fa.fa-caret-down
