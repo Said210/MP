@@ -8,4 +8,7 @@ class WelcomeController < ApplicationController
   def discover
 
   end
+  def new
+
+  end
 end

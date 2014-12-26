@@ -11,9 +11,9 @@ header.topbar
         li.user-dropdown[data-dropdown]
           a href="javascript: void(0)"
             i.fa.fa-caret-down
-            span.user-pic = image_tag 'annie.jpg'
+            span.user-pic = image_tag current_user.avatar
           ul.user-options-dropdown
-            li = link_to  "Annie Clark", root_path
+            li = link_to  current_user.username, root_path
             li = link_to destroy_user_session_path, method: :delete do
               i.fa.fa-sign-out
               span  Salir

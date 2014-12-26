@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root 'welcome#index'
   get '/test' => 'welcome#test'
   get '/discover' => 'welcome#discover'
+  get '/similar' => 'welcome#new'
 
   devise_for :users, :controllers => { registrations: 'registrations' }
   # The priority is based upon order of creation: first created -> highest priority.

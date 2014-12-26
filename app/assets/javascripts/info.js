@@ -43,7 +43,7 @@ aplicacion.controller('Albums', function($scope, $http ) {
     $scope.buscar = function(){
         var field=document.getElementById('LookFor').value;
         $http({
-            method: 'GET', url: 'https://api.spotify.com/v1/search?q='+field+'&type=album,artist,track'
+            method: 'GET', url: 'https://api.spotify.com/v1/search?q='+field+'&type=artist'
         }).
         success(function(data) {
             if(typeof(data) == 'object'){
