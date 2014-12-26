@@ -33,6 +33,10 @@ javascript:
   var ready;
   ready = function() {
   	$(window).scrollTop(1);
+    var possibilities = ["musican-349790.jpg","cassie.jpg","o-HAPPY-WINTER-facebook.jpg"];
+    var bg=possibilities[Math.floor(Math.random() * (possibilities.length))];
+    $("#fs").css("background-image","url(/assets/"+bg+")");
+    console.log(bg);
   };
 
   $(document).ready(ready);
@@ -67,7 +71,7 @@ javascript:
   		$(elem).css("top",s);
   	}
   }
-.section.section1 data-place="0" 
+#fs.section.section1 data-place="0" 
   #insider
     h1 Musicpoint
     h3 Share your good taste
@@ -78,6 +82,7 @@ javascript:
 .section3.section data-place="2" data-speed="100" 
   #insider
     h1 Unete Ahora
+    h3 Es gratis :3
     button ¡Registrarme!
 .middle.middle1 data-place="2.97" data-speed="90" style="min-height:100px" 
   sub Musicpoint by Breakpoint at Notion Engineering
