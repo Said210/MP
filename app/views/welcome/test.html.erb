@@ -15,10 +15,8 @@
 
 <div ng-controller="Albums">
 		
-		<form action="#">
 			<input type="text" id="LookFor">
-			<input type="button" ng-click="buscar()">
-		</form>
+			<button ng-click="lookFor()">S</button>
 		
 		<div ng-repeat="i in Spotify_albums.items">
 			<img src="{{i.images[0].url}}" width="50px" alt="">

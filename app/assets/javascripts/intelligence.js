@@ -1,4 +1,4 @@
-var aplicacion = angular.module('appl', []);
+
 
 aplicacion.controller('suggestions', function($scope, $http ) {
 

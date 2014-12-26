@@ -30,7 +30,7 @@ aplicacion.controller('Albums', function($scope, $http ) {
         }).success(function(data) {
             if(typeof(data) == 'object'){
                 $scope.Spotify_album_tracks = data.tracks.items;
-                setTimeout(function() {setURLs(); alert("preOne")}, 3000);
+                setTimeout(function() {setURLs();}, 1000);
             }else{
                 alert('Error al intentar recuperar los datos de spotify 1.');
             }
@@ -40,10 +40,10 @@ aplicacion.controller('Albums', function($scope, $http ) {
         });
     };
 
-    $scope.buscar = function(){
+    $scope.lookFor = function(){
         var field=document.getElementById('LookFor').value;
         $http({
-            method: 'GET', url: 'https://api.spotify.com/v1/search?q='+field+'&type=artist'
+            method: 'GET', url: 'https://api.spotify.com/v1/search?q='+field+'&type=artist,album'
         }).
         success(function(data) {
             if(typeof(data) == 'object'){
@@ -61,7 +61,6 @@ aplicacion.controller('Albums', function($scope, $http ) {
         var player=document.getElementById("ply")
         player.src=SongURL;
         player.play();
-        
     }
   
 });
