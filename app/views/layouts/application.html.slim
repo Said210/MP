@@ -2,7 +2,7 @@ doctype html
 html ng-app="appl" 
   head
     - # Use title and description helpers in views to change this damn easy
-    title = content_for?(:title) ? yield(:title) : "MP"
+    title = content_for?(:title) ? yield(:title) : "mp"
     meta name="description" content="#{content_for?(:description) ? yield(:description) : 'Musicpoint, luce tu buen gusto'}"
     script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js" 
     
@@ -10,7 +10,7 @@ html ng-app="appl"
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
 
-  - # Use the body_classes helper to add classes to the body form views  
+  - # Use the body_classes helper to add classes to the body from views  
   body class="#{if content_for?(:body_classes) then yield(:body_classes)}"
     == render 'elements/navigation'
     .container == yield
