@@ -9,11 +9,10 @@
 			{{i.name}} <br>
 		<span class="link" ng-click="find_similar_artists(i.uri)">Más como esto</span> - <span class="link" ng-click="show_top_music(i.id)">Dame los hits</span>
 	</div>
-	
 	<div ng-repeat="j in similar_artists" style="background-color:#f0f0f0;color:#000;width:40%; display:inline-block">
 		<img src="{{similar_artists_pics[$index+1].images[0].url}}" width="50px" alt="">
 		{{similar_artists_pics[$index+1].name}}
-		
+		<span class="link" ng-click="show_top_music(similar_artists_pics[$index+1].id)">Dame los hits</span>
 		<br>
 	</div>
 
