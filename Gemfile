@@ -40,6 +40,8 @@ gem 'paperclip', '~> 4.2'
 
 gem 'devise', '3.0.0'
 
+gem 'jquery-turbolinks'
+
 gem 'haml'
 
 # Use ActiveModel has_secure_password

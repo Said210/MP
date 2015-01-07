@@ -5,6 +5,8 @@ aplicacion.controller('suggestions', function($scope, $http ) {
 	$scope.similar_artists=[];
 	$scope.similar_artists_pics=[];
 	$scope.spotify_artists=[];
+    $scope.dude_top_tracks=[];
+
 	$scope.buscar = function(){
         
         var field=document.getElementById('LookFor').value;
@@ -67,5 +69,37 @@ aplicacion.controller('suggestions', function($scope, $http ) {
             alert('Error al intentar recuperar los datos de echonest.');
         });
     }
+    $scope.show_top_music = function(id){
+        //https://api.spotify.com/v1/artists/2ziB7fzrXBoh1HUPS6sVFn/top-tracks?country=MX
 
+        $http({
+            method: 'GET', url: 'https://api.spotify.com/v1/artists/'+id+'/top-tracks?country=MX'
+        }).
+        success(function(data) {
+            if(typeof(data) == 'object'){
+                $scope.dude_top_tracks = data.tracks;
+                setTimeout(function() {setURLs();}, 1000);
+            }else{
+                alert('Error al intentar recuperar los datos de canciones de spotify.');
+            }
+        }).
+        error(function() {
+            alert('Error al intentar recuperar los datos de canciones de spotify.');
+        });
+
+    }
+    $scope.playPreview = function(SongURL){
+        var player=document.getElementById("ply")
+        player.src=SongURL;
+        player.play();
+    }
 });
+
+function setURLs(){
+        $(".playButton").each(function(){
+            play_Btn($(this));
+        });
+    }
+    function play_Btn(elem){
+        $(elem).attr("src","https://embed.spotify.com/?uri="+$(elem).data("uris"));
+    }

@@ -43,7 +43,7 @@ aplicacion.controller('Albums', function($scope, $http ) {
     $scope.lookFor = function(){
         var field=document.getElementById('LookFor').value;
         $http({
-            method: 'GET', url: 'https://api.spotify.com/v1/search?q='+field+'&type=artist,album'
+            method: 'GET', url: 'https://api.spotify.com/v1/search?q='+field+'&type=artist,album,track'
         }).
         success(function(data) {
             if(typeof(data) == 'object'){
@@ -62,5 +62,26 @@ aplicacion.controller('Albums', function($scope, $http ) {
         player.src=SongURL;
         player.play();
     }
-  
 });
+
+aplicacion.controller('profile-panel', function($scope, $http ) {
+
+    $scope.posts=[];
+    $scope.load_posts = function(id){
+        $http({
+            method: 'GET', url: '/p/by/'+id+'.json'
+        }).
+        success(function(data) {
+            if(typeof(data) == 'object'){
+                $scope.posts = data;
+            }else{
+                alert('Error al intentar recuperar los posts.');
+            }
+        }).
+        error(function() {
+            alert('Error al intentar recuperar los posts.');
+        });
+    }
+});
+
+

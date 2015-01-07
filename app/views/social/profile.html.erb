@@ -1,0 +1,36 @@
+    <%= stylesheet_link_tag 'social/me', media: 'all', 'data-turbolinks-track' => true %>
+
+<script>
+	function do_timeago(){
+		$("abbr.timeago").timeago();
+	}
+	$(function () {
+		
+		window.setTimeout(function(){do_timeago();},600);
+	});
+</script>
+<div class="cover">
+	<p class="Username">@<%=@u.username%></p>
+</div>
+<div class="pp-container">
+	<img class="pp" src="<%=@u.avatar.url(:medium)%>">
+</div>
+
+<div class="submenu" ng-controller="profile-panel" ng-init="load_posts(<%=@u.id %>)">
+	<ul type="none">
+		<li class="active">Posts</li>
+		<li>Enemies</li>
+		<li>Followers</li>
+		<li class="l-filter"><input type="text" placeholder="Buscar..." ng-model="search" class="filter" onkeyup="do_timeago()"></li>
+	</ul>
+	
+	
+	
+	<div ng-repeat="post in posts | filter:search">
+		{{post.text}} <br>
+		<sub><abbr class="timeago" title="{{post.updated_at}}"></abbr>
+		<hr></sub>
+	</div>
+	
+	
+</div>
