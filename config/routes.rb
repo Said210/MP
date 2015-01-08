@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   get '/test' => 'welcome#test'
   get '/discover' => 'welcome#discover'
   get '/similar' => 'welcome#new'
+  get '/advanced' => 'welcome#advanced'
+
+  post '/add' => 'social#add'
 
   devise_for :users, :controllers => { registrations: 'registrations' }
 

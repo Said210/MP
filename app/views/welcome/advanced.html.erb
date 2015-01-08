@@ -1,0 +1,28 @@
+<div ng-controller="advanced_search" style="width:40%; margin-left:30%">
+	<form action="javascript: void(0)">
+	<fieldset>
+		<legend>Estilo:</legend>
+			<input type="radio" name="style" value="indie"> Indie |
+			<input type="radio" name="style" value="pop">	Pop <br>
+			<input type="radio" name="style" value="jazz"> jazz &nbsp;|
+			<input type="radio" name="style" value="none"> none <br>
+	</fieldset>
+
+		<fieldset>
+		<legend>limite:</legend>
+			<label for="results">Limite</label><input type="number" name="results" value="15" id="results">
+		</fieldset>
+		<fieldset>
+		<legend>Estilo:</legend>
+			<input type="radio" name="mood" value="happy"> happy <br>
+			<input type="radio" name="mood" value="chill">	chill <br>
+			<input type="radio" name="mood" value="sad"> sad <br>
+			<input type="radio" name="mood" value="tired"> none <br>
+		</fieldset>
+		<p align="center"><button>Enviar</button></p>
+	</form>
+
+	<div ng-repeat="a in artists">
+		
+	</div>
+</div>

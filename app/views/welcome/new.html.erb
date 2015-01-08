@@ -11,15 +11,15 @@
 	</div>
 	<div ng-repeat="j in similar_artists" style="background-color:#f0f0f0;color:#000;width:40%; display:inline-block">
 		<img src="{{similar_artists_pics[$index+1].images[0].url}}" width="50px" alt="">
-		{{similar_artists_pics[$index+1].name}}
-		<span class="link" ng-click="show_top_music(similar_artists_pics[$index+1].id)">Dame los hits</span>
+		{{similar_artists_pics[$index+1].name}} -
+		<span class="link" ng-click="show_top_music(similar_artists_pics[$index+1].id)" style="color:blue">Dame los hits</span>
 		<br>
 	</div>
 
 	<div ng-repeat="track in dude_top_tracks">
 		<iframe id="{{track.id}}" class="playButton" src="#" data-uris="{{track.uri}}" ng-name="{{track.name}}" width="80" height="80" frameborder="0" allowtransparency="true"></iframe>
 		{{track.name}} <br>
-		<span ng-click="playPreview(j.preview_url)">Play preview</span>
+		<span style="color:blue" ng-click="playPreview(j.preview_url)">Play preview</span>
 		<hr>
 
 	</div>

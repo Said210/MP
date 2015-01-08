@@ -1,4 +1,26 @@
+aplicacion.controller('advanced_search', function($scope, $http ) {
+    $scope.advanced_artists=[];
 
+    $scope.advanced_search=function(){
+        var style=$('input[name="style"]:checked').val();
+        var limit=document.getElementById('results').value;
+        var mood=$('input[name="mood"]:checked').val();
+        $http({
+            method: 'GET', url: 'https://api.spotify.com/v1/search?q='+field+'&type=artist'
+        }).
+        success(function(data) {
+            if(typeof(data) == 'object'){
+                $scope.spotify_artists = data.artists;
+            }else{
+                alert('Error al intentar recuperar los datos de spotify.');
+            }
+        }).
+        error(function() {
+            alert('Error al intentar recuperar los datos de spotify.');
+        });
+    }
+
+});
 
 aplicacion.controller('suggestions', function($scope, $http ) {
 
@@ -93,6 +115,7 @@ aplicacion.controller('suggestions', function($scope, $http ) {
         player.src=SongURL;
         player.play();
     }
+
 });
 
 function setURLs(){

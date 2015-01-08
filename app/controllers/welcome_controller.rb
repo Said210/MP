@@ -9,6 +9,9 @@ class WelcomeController < ApplicationController
 
   end
   def new
-
   end
+
+  def advanced
+  end
+
 end

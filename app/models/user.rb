@@ -9,6 +9,6 @@ class User < ActiveRecord::Base
  	validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
   has_many :post
-
+  has_many :friend
   validates :username,uniqueness: { case_sensitive: false }
 end

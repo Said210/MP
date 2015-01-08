@@ -11,6 +11,7 @@
 </script>
 <div class="cover">
 	<p class="Username">@<%=current_user.username%></p>
+	
 </div>
 <div class="pp-container">
 	<img class="pp" src="<%=current_user.avatar.url(:medium)%>">
@@ -40,5 +41,10 @@
 		<hr></sub>
 	</div>
 	
+	<hr>
+
+	<% @friends.each do |f| %>
+		<b>Name: </b><i><%=get_name(f.friend_id)%></i>
+	<% end %>
 	
 </div>
