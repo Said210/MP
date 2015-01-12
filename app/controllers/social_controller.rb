@@ -15,6 +15,7 @@ class SocialController < ApplicationController
   end
 
   def profile
+
     @post = Post.new
   	if current_user.username == params[:id]
       @u = current_user

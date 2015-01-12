@@ -1,13 +1,14 @@
 <script>
-	
-	function setURLs(){
-		$(".playButton").each(function(){
-	    	play_Btn($(this));
-	    });
-	}
-	function play_Btn(elem){
-		$(elem).attr("src","https://embed.spotify.com/?uri="+$(elem).data("uris"));
-	}
+function setURLs(){
+    $(".playButton").each(function(){
+        play_Btn($(this));
+    });
+}
+function play_Btn(elem){
+    $(elem).attr("src","https://embed.spotify.com/?uri="+$(elem).data("uris"));
+}
+
+
 </script>
 <br><br><br>
 <iframe src="https://embed.spotify.com/?uri=spotify:track:4th1RQAelzqgY7wL53UGQt" width="300" height="80" frameborder="0" allowtransparency="true"></iframe>

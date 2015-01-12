@@ -63,6 +63,7 @@ aplicacion.controller('Albums', function($scope, $http ) {
         player.play();
     }
 });
+    
 
 aplicacion.controller('profile-panel', function($scope, $http ) {
 
@@ -77,6 +78,7 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
         success(function(data) {
             if(typeof(data) == 'object'){
                 $scope.posts = data;
+                setTimeout(function() {setURLs();}, 1000);
             }else{
                 alert('Error al intentar recuperar los posts.');
             }
@@ -185,5 +187,30 @@ function readURL(input) {
         }
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function share_song(keys,values){
+    var result="{";
+    if(keys.length == values.length){
+        if (keys.indexOf("text") == -1) {
+            keys.push("text");
+            values.push("");
+        }else{
+            if (values[keys.indexOf("text")] == "!ask_for_text") {
+                values[keys.indexOf("text")] = prompt("Please enter your message", "");
+            };
+        };
+
+        for (var i = 0; i < keys.length; i++) {
+            result=result+'"'+keys[i]+'": "'+values[i]+'"';
+            if (i<keys.length - 1) {result=result+", "};
+        };
+        result=result+"}";
+        result=JSON.parse(result);
+        $.post("/p/create",result).always(function(data){
+            alert(data);
+        });
+    }
+    
 }
 

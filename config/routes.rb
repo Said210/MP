@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     get '/p/at/:id' => 'posts#at_user'#, :constraints => {:subdomain => 'api'}
 
     get '/api/u/get/pic/:id' => 'social#get_image_url'
+
+    post '/p/create' => 'posts#create_attached_song_post'
     
   #end
   

@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only:[:index,:create,:new,:update,:destroy]
+  before_action :authenticate_user!, only:[:index,:create,:new,:update,:destroy, :create_attached_song_post]
   # GET /posts
   # GET /posts.json
   def index
@@ -56,6 +56,33 @@ class PostsController < ApplicationController
         if @post.save
           format.html { redirect_to :back, notice: 'Post was successfully created.' }
           format.json { render :show, status: :created, location: @post }
+        else
+          format.html { render :new }
+          format.json { render json: @post.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+  end
+
+  def create_attached_song_post
+    if params[:text].nil?
+      render text: "You need to fill text field"
+    else
+      @post = Post.new
+      @post.user_id = params[:user_id].nil? ? current_user : User.find(params[:user_id])
+      @post.posted_at = params[:posted_at].nil? ? current_user.id : User.find(params[:posted_at])
+      @post.text = params[:text]
+      @post.currentdate=Time.now.utc.strftime("%Y-%m-%d %I:%M")
+      if params[:song_uri]
+        @post.post_type="Song"
+        @post.song_uri=params[:song_uri]
+      else
+        @post.post_type="Post"
+      end
+      respond_to do |format|
+        if @post.save
+          format.html { render text: "Post was successfully created.", notice: 'Post was successfully created.' }
+          format.json { render json: @post }
         else
           format.html { render :new }
           format.json { render json: @post.errors, status: :unprocessable_entity }

@@ -23,6 +23,15 @@
     alert($("#pots_type").val());
     readURL(a);
   }
+  function setURLs(){
+    $(".playButton").each(function(){
+        play_Btn($(this));
+    });
+}
+function play_Btn(elem){
+    $(elem).attr("src","https://embed.spotify.com/?uri="+$(elem).data("uris"));
+}
+
 </script>
 <div class="cover">
   <p class="Username">@<%=@u.username%></p>
@@ -66,6 +75,8 @@
 
       <h3>{{post.text}}</h3> <br>
       <img ng-if="post.post_type=='Pic'" class="pic" data-post_id="{{post.id}}" />
+      <iframe ng-show="post.post_type=='Song'" id="{{post.song_uri}}" class="playButton attached_song" src="#" data-uris="{{post.song_uri}}" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+
       <div class="side-controll">
         <a ng-show="posted_at(post.user_id.id,post.posted_at) || owner(post.user_id.id,post.posted_at)" data-confirm="¿Seguro de que quieres borrarlo?" data-method="delete" href="/posts/{{post.id}}" rel="nofollow"><i class="fa fa-times-circle-o"> </i> Delete</a><br>
         <a ng-show="owner(post.user_id.id,post.posted_at)" href="/posts/{{post.id}}/edit"><i class="fa fa-edit"></i> Edit</a>
