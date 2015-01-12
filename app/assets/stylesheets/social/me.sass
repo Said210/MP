@@ -1,0 +1,224 @@
+@import bourbon
+$main_color: white
+
+.cover
+  background-image: url("/assets/Optimized-90H.jpg")
+  width: 100%
+  height: 100%
+  background-size: cover
+  background-position: center
+  position: absolute
+  top: 0px
+
+.pp-container
+  width: 150px
+  height: 150px
+  border-radius: 10px
+  border: 5px solid $main_color
+  //box-shadow: 0px 0px 10px #ccc;
+  vertical-align: middle
+  display: table-cell
+  position: absolute
+  top: calc(100% - 75px)
+  left: calc(50% - 75px)
+  z-index: 2
+
+.pp
+  width: 100%
+  z-index: 2
+
+.Username
+  position: absolute
+  min-width: 100%
+  z-index: 1
+  top: 50%
+  font-weight: bolder
+  text-align: center
+  text-transform: capitalize
+  color: #fff
+  font-size: 80px
+  font-family: 'Open Sans', sans-serif
+
+.sp-btn
+  background-color: #fff
+  width: 150px
+  height: 30px
+  color: #fff
+  position: absolute
+  bottom: 5px
+  text-align: center
+  font-family: 'Open sans', sans-serif
+  font-weight: bold
+  border-radius: 2px
+  cursor: pointer
+  padding-top: 5px
+
+.follow
+  background-color: #4d7ede
+  right: 10px
+
+.enemy
+  background-color: #de5054
+  left: 10px
+
+.submenu
+  //background-color: $main_color;
+  width: 70%
+  min-height: 60px
+  position: absolute
+  top: 100%
+  //box-shadow: 0px 0px 10px #ccc;
+  left: 15%
+  ul
+    min-height: 40px
+    li
+      padding-top: 10px
+      display: inline-block
+      font-size: 18px
+      color: #ccc
+      text-decoration: underline
+      cursor: pointer
+      margin-left: 30px
+      float: right
+      &:hover
+        color: #000
+    .active
+      color: #000
+      
+  .l-filter
+    float: left
+    .filter
+      background-color: #fff
+      border: none
+      border: 1px solid #ccc
+      width: 200px
+      height: 30px
+      border-radius: 3px
+      +transition(all 1s)
+      &:focus
+        position: absolute
+        left: 0px
+        width: 100%
+  .main_submenu
+    position: -webkit-sticky
+    position: -moz-sticky
+    position: -ms-sticky
+    position: -o-sticky
+    top: 75px
+    background-color: $main_color
+    z-index: 1
+
+.section_active
+  display: block
+
+.section_inactive
+  display: none
+
+.post
+  position: relative
+  min-height: 300px
+  .side-controll
+    position: -webkit-sticky
+    position: -moz-sticky
+    position: -ms-sticky
+    position: -o-sticky
+    float: right
+    width: 90px
+    top: 115px
+    text-align: right
+    a
+      color: #ccc
+  h1
+    display: inline-block
+    margin-right: 0px
+    color: #444
+    &::after
+      content: ""
+      position: absolute
+      width: 100%
+      top: 26px
+      background-color: #e4e4e4
+      height: 3px
+  h4
+    position: absolute
+    top: -15px
+    left: 75px
+    text-transform: capitalize
+  h3
+    max-width: 400px
+    display: inline-block
+  sub
+    position: absolute
+    top: 35px
+    margin-left: 10px
+  .pic
+    position: absolute
+    margin-left: 400px
+    top: 40px
+    width: 300px
+    max-height: 250px
+    border-radius: 5px
+  .profile_post_pic
+    width: 60px
+    display: inline-block
+    border-radius: 5px
+
+
+#new_post
+  margin-top: 40px
+  min-height: 150px
+  font-size: 20px
+  #preview
+    position: absolute
+    top: 150px
+    margin-left: auto
+    margin-right: auto
+    left: 0
+    right: 0
+    height: 60px
+    z-index: 0
+    +transition(all 1s)
+    &:hover
+      height: 30%
+      z-index: 100
+      left: 0
+      right: 0
+  .add_pic
+    cursor: pointer
+    &:hover span
+      opacity: 1
+    span
+      font-size: 15px
+      padding: 5px
+      background-color: #333
+      color: #fff
+      position: absolute
+      margin-top: 40px
+      margin-left: -38px
+      opacity: 0
+      +transition(all .5s)
+  
+  input[type=submit]
+    background-color: #68abff
+    min-height: 35px
+    color: #fff
+    border: none
+    font-size: 17px
+    margin-top: 10px
+  .field
+    width: 50%
+    margin-left: 25%
+    text-align: right
+  textarea
+    background-color: white
+    border: 2px solid #ccc
+    resize: none
+    font-size: 20px
+    color: #222
+    font-family: 'Arial'
+    width: 100%
+  label
+    color: #444
+    font-family: 'Arial'
+    &::after
+      content: ": "

@@ -17,7 +17,7 @@
         <td><%= post.text %></td>
         <td><%= post.created_at.strftime("%Y-%m-%d %I:%M") %></td>
         <td><%= link_to 'Show', post %></td>
-        <% if post.user_id == current_user.id %>
+        <% if post.user_id == current_user %>
           <td><%= link_to 'Edit', edit_post_path(post) %></td>
           <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>

@@ -28,15 +28,16 @@ class SocialController < ApplicationController
   end
 
   def add
-    u = User.find_by(username: params[:username])
+    u = User.find(params[:ide])
+    puts u
     if u.nil?
       render text: "Not a user"
     else
       checkpoint = check_friendship(current_user.id, u.id)
       if checkpoint[0].nil?
         friendship = Friend.new
-        friendship.user_id = current_user.id
-        friendship.friend_id= u.id
+        friendship.user_id = current_user
+        friendship.friend_id= u
         friendship.save
         redirect_to me_path
       else
@@ -46,9 +47,25 @@ class SocialController < ApplicationController
     end
   end
 
+######################
+  
   def check_friendship(user1, user2)
     friendship = Friend.where(user_id: user1, friend_id: user2)
     return friendship    
+  end
+
+  def get_friends
+    user_id = params[:user_id]
+    friend_list = Friend.where(friend_id: user_id).all#User.joins(:friend).where(friends: {friend_id: user_id}).all
+    respond_to do |format|
+      format.json { render json: friend_list}
+
+    end
+  end
+
+  def get_image_url
+    @user = User.find(params[:id])
+    render inline: "<%= @user.avatar.url(:thumb) %>"
   end
 
 end

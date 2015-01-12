@@ -1,8 +1,8 @@
 var aplicacion = angular.module('appl', []);
-
+var loaded=false;
 aplicacion.controller('Albums', function($scope, $http ) {
 
-    $scope._id = null;
+    $scope.id = null;
     $scope.nombre = '';
     $scope.Spotify_albums = [];
     $scope.Deezer_albums = [];
@@ -67,9 +67,12 @@ aplicacion.controller('Albums', function($scope, $http ) {
 aplicacion.controller('profile-panel', function($scope, $http ) {
 
     $scope.posts=[];
-    $scope.load_posts = function(id){
+    $scope.friends=[];
+    $scope.u_id=0;
+    $scope.current_user_id=0;
+    $scope.load_posts = function(){
         $http({
-            method: 'GET', url: '/p/by/'+id+'.json'
+            method: 'GET', url: '/p/at/'+$scope.u_id+'.json'
         }).
         success(function(data) {
             if(typeof(data) == 'object'){
@@ -77,11 +80,104 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
             }else{
                 alert('Error al intentar recuperar los posts.');
             }
+            loaded=false;
+            setTimeout(function() {post_load_images();}, 2000);
         }).
         error(function() {
             alert('Error al intentar recuperar los posts.');
         });
     }
+    $scope.get_friends = function(){
+        $http({
+            method: 'GET', url: '/get/friendlist/'+$scope.u_id+'.json'
+        }).
+        success(function(data) {
+            if(typeof(data) == 'object'){
+                $scope.friends = data;
+                if($scope.friends.length == 0){
+                    $scope.friends.push(JSON.parse('{"username":"No tienes seguidores, consigue algunos"}'));
+                }
+            }else{
+                alert('Error al intentar recuperar los amigos.');
+            }
+        }).
+        error(function(data) {
+            console.log(data);
+            alert('Error al intentar recuperar los amigos.');
+        });
+    }
+    $scope.start=function(id,c_u_id){
+        $scope.u_id=id;
+        $scope.current_user_id=c_u_id;
+        $scope.get_friends();
+        $scope.load_posts();
+    }
+    $scope.editable = function(user_id_param, posted_at_param){
+        console.log("Usr id param -> "+user_id_param+"\n Posted at param -> "+posted_at_param);
+        console.log($scope.current_user_id == user_id_param || $scope.u_id == posted_at_param);
+        if($scope.current_user_id==user_id_param || $scope.current_user_id == posted_at_param){
+            return true;
+        }else{
+            return false;
+        }
+    }
 });
 
+
+var ids, elems, user_ids,profile_post_pics;
+ids=[];
+elems=[];
+user_ids=[];
+profile_post_pics=[];
+var post_load_images = function(){
+    $(".pic").each(function(){
+        ids.push($(this).data("post_id"));
+        elems.push($(this));
+    });
+     $(".profile_post_pic").each(function(){
+        user_ids.push($(this).data("user_id"));
+        profile_post_pics.push($(this));
+    });
+    if(!loaded){
+        for(var ind=0; ind < ids.length ;ind++){
+            get_foreign_post_images_urls(ind);
+        };
+        for (var ind = 0; ind < user_ids.length; ind++) {
+            get_foreign_profile_post_images_urls(ind);
+        };
+    }
+    loaded=true;
+}
+var get_foreign_post_images_urls = function(index){
+    $.get( "/p/pic/"+ids[index]).done(function( data ) {
+            elems[index].attr("src",data);
+        }).fail(function(data){
+            console.log("ERROR! -> "+data);
+        }).always(function() {
+            console.log("Get_for... -> @"+ids[index]);
+        });
+}
+var get_foreign_profile_post_images_urls = function(index){
+    setTimeout(function(){
+    $.get( "/api/u/get/pic/"+user_ids[index]).done(function( data ) {
+            profile_post_pics[index].attr("src",data);
+        }).fail(function(data){
+            console.log("ERROR! ");
+            console.log(data);
+        }).always(function() {
+            console.log("Profile pic for get_for... -> @"+ids[index]);
+        });
+    },600*index);
+}
+
+function readURL(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#preview').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 

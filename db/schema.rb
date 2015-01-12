@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150107170546) do
+ActiveRecord::Schema.define(version: 20150111005041) do
 
   create_table "friends", force: true do |t|
     t.integer  "user_id"
@@ -27,6 +27,13 @@ ActiveRecord::Schema.define(version: 20150107170546) do
     t.date     "currentdate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type",               default: "Post"
+    t.string   "posted_at",          default: "1"
+    t.string   "post_type",          default: "Post"
+    t.string   "asset_file_name"
+    t.string   "asset_content_type"
+    t.integer  "asset_file_size"
+    t.datetime "asset_updated_at"
   end
 
   create_table "songs", force: true do |t|

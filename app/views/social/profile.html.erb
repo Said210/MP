@@ -4,16 +4,30 @@
   function do_timeago(){
     $("abbr.timeago").timeago();
   }
+  var change_view = function(a){
+    var n=$(a).data("number");
+    console.log(typeof(n));
+    $('.menu_btn').removeClass("active");
+    $(a).addClass("active");
+    $('.section_active').addClass('section_inactive').removeClass('section_active');
+    $('#section_'+n).addClass('section_active').removeClass('section_inactive');
+  }
   $(function () {
     window.setTimeout(function(){do_timeago();},600);
+    $('.menu_btn').attr("onClick","change_view(this)");
   });
-  
+  var update = function(a){
+    alert($("#pots_type").val());
+    $("#pots_type").val("Pic");
+    alert($("#pots_type").val());
+    readURL(a);
+  }
 </script>
 <div class="cover">
   <p class="Username">@<%=@u.username%></p>
   <%if !@me%>
 
-    <div class="sp-btn follow" id="follow" data-username="<%=@u.username%>"> <i class="fa fa-plus"></i>
+    <div class="sp-btn follow" id="follow" data-username="<%=@u.id%>"> <i class="fa fa-plus"></i>
     <span id="ftext"> <%if check_friendship(current_user.id, @u.id)[0].nil? %>Follow<%else%>Unfollow<%end%> </span></div>
 
     <div class="sp-btn enemy"> <i class="fa fa-warning"></i> Declare War</div>
@@ -24,37 +38,53 @@
   <img class="pp" src="<%=@u.avatar.url(:medium)%>">
 </div>
 
-<div class="submenu" ng-controller="profile-panel" ng-init="load_posts(<%=@u.id %>)">
-  <ul type="none">
-    <li class="active">Posts</li>
-    <li>Enemies</li>
-    <li>Followers</li>
-    <li class="l-filter"><input type="text" placeholder="Buscar..." ng-model="search" class="filter" onkeyup="do_timeago()"></li>
+<div id="controller" class="submenu" ng-controller="profile-panel" ng-init="start(<%=@u.id%>,<%=current_user.id%>);">
+  <ul type="none" class="main_submenu">
+    <li class="active menu_btn" data-number="1">Posts</li>
+    <li class="menu_btn" data-number="2">Enemies</li>
+    <li class="menu_btn" ng-click="get_friends()" data-number="3">Followers</li>
   </ul>
   
 
-  <%= form_for(@post) do |f| %>
+  <%= form_for(@post,:html => { :multipart => true })  do |f| %>
     <div class="field">
-      <%= f.label :text %><br>
-      <%= f.text_area :text %>
-    </div>
-    <div class="actions">
+      <%= f.text_area :text, id: :post_place, :placeholder => "Un mensaje" %> <br>
+      <span class="add_pic" onclick="$( '#post_asset' ).trigger( 'click' );"><i class="fa fa-camera-retro"></i><span>Add pic</span></span>
       <%= f.submit %>
+      <img id="preview"/>
     </div>
   <%end%>
-  
-  <form action="/add" method="post"><input type="text" name="username"> <input type="submit" value="add"> </form>
 
-  <div ng-repeat="post in posts | filter:search">
-    {{post.text}} <br>
-    <sub><abbr class="timeago" title="{{post.updated_at}}"></abbr>
-    <hr></sub>
+  <div id="section_1" class="section_active">
+
+    <div class="post" ng-repeat="post in posts | filter:search">
+      <img class="profile_post_pic" data-user_id="{{post.user_id.id}}">
+      <a href="/u/{{post.user_id.username}}"><h4>{{post.user_id.username}}</h4></a><h1></h1> <sub><abbr class="timeago" title="{{post.updated_at}}"></abbr></sub><br>
+
+      <h3>{{post.text}}</h3> <br>
+      <img ng-if="post.post_type=='Pic'" class="pic" data-post_id="{{post.id}}" />
+      <div class="side-controll" ng-show="editable(post.user_id.id,post.posted_at)">
+        <a data-confirm="¿Seguro de que quieres borrarlo?" data-method="delete" href="/posts/{{post.id}}" rel="nofollow"><i class="fa fa-times-circle-o"> </i> Delete</a><br>
+        <a href="/posts/{{post.id}}/edit"><i class="fa fa-edit"></i> Edit</a>
+      </div>
+    </div>
   </div>
   
-  <hr>
+  <div id="section_2" class="section_inactive">
+    <div>
+      <h2>Nothing to see here, get off</h2>
+    </div>
+  </div>
 
-  <% @friends.each do |f| %>
-    <b>Name: </b><i><%=get_name(f.friend_id)%></i>
-  <% end %>
-  
+  <div id="section_3" class="section_inactive">
+    <div ng-repeat="f in friends">
+      <a href="/u/{{f.user_id.username}}"><h2>{{f.user_id.username}} </h2></a>
+      </sub>
+    </div>
+  </div>
+
+  <input class="hidden" id="pots_type" name="post[post_type]" value="Post" type="text" form="new_post">
+  <input class="hidden" id="post_posted_at" name="post[posted_at]" value="<%= @u.id%>" type="text" form="new_post">
+  <input class="hidden" id="post_asset" name="post[asset]" onchange="update(this)" type="file" form="new_post">
+
 </div>

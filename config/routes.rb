@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get '/u/:id' => 'social#profile'
+
   get '/me' => 'social#me'
   get '/followers' => 'social#followers'
   get '/enemies' => 'social#enemies'
@@ -11,17 +13,22 @@ Rails.application.routes.draw do
   get '/advanced' => 'welcome#advanced'
 
   #Social Magic#
+  get '/get/friendlist/:user_id' => 'social#get_friends'
   post '/add' => 'social#add', as: :add 
    #End of social Magic#
 
   devise_for :users, :controllers => { registrations: 'registrations' }
 
-  get '/p/by/:id' => 'posts#by_user'#, :constraints => {:subdomain => 'api'}
+  
 
   ##### API #####
   #namespace :api, path: '', constraints: {subdomain: 'api'} do
     resources :posts
-    get '/u/:id' => 'social#profile'
+    get '/p/pic/:id' => 'posts#get_image_url'
+    get '/p/at/:id' => 'posts#at_user'#, :constraints => {:subdomain => 'api'}
+
+    get '/api/u/get/pic/:id' => 'social#get_image_url'
+    
   #end
   
   # Example resource route within a namespace:
