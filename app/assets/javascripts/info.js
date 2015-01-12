@@ -112,10 +112,16 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
         $scope.get_friends();
         $scope.load_posts();
     }
-    $scope.editable = function(user_id_param, posted_at_param){
-        console.log("Usr id param -> "+user_id_param+"\n Posted at param -> "+posted_at_param);
-        console.log($scope.current_user_id == user_id_param || $scope.u_id == posted_at_param);
-        if($scope.current_user_id==user_id_param || $scope.current_user_id == posted_at_param){
+    $scope.owner = function(user_id_param, posted_at_param){
+        if($scope.current_user_id==user_id_param){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    $scope.posted_at = function(user_id_param, posted_at_param){
+        
+        if( $scope.current_user_id == posted_at_param){
             return true;
         }else{
             return false;
@@ -167,7 +173,7 @@ var get_foreign_profile_post_images_urls = function(index){
         }).always(function() {
             console.log("Profile pic for get_for... -> @"+ids[index]);
         });
-    },600*index);
+    },400*index);
 }
 
 function readURL(input) {

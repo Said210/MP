@@ -15,6 +15,7 @@
   $(function () {
     window.setTimeout(function(){do_timeago();},600);
     $('.menu_btn').attr("onClick","change_view(this)");
+    $("#pots_type").val("Post");
   });
   var update = function(a){
     alert($("#pots_type").val());
@@ -40,18 +41,20 @@
 
 <div id="controller" class="submenu" ng-controller="profile-panel" ng-init="start(<%=@u.id%>,<%=current_user.id%>);">
   <ul type="none" class="main_submenu">
-    <li class="active menu_btn" data-number="1">Posts</li>
+    <li class="active menu_btn" data-number="1"><b>{{posts.length}}</b> Posts</li>
     <li class="menu_btn" data-number="2">Enemies</li>
-    <li class="menu_btn" ng-click="get_friends()" data-number="3">Followers</li>
+    <li class="menu_btn" ng-click="get_friends()" data-number="3"> <b>{{friends.length}}</b> Follower</li>
   </ul>
   
 
   <%= form_for(@post,:html => { :multipart => true })  do |f| %>
     <div class="field">
+
       <%= f.text_area :text, id: :post_place, :placeholder => "Un mensaje" %> <br>
-      <span class="add_pic" onclick="$( '#post_asset' ).trigger( 'click' );"><i class="fa fa-camera-retro"></i><span>Add pic</span></span>
-      <%= f.submit %>
-      <img id="preview"/>
+      <img id="preview" />
+      <span class="add_pic" onclick="$( '#post_asset' ).trigger( 'click' );">
+      <%= f.submit %> <i class="fa fa-camera-retro"></i><span>Add pic</span></span>
+      
     </div>
   <%end%>
 
@@ -63,9 +66,9 @@
 
       <h3>{{post.text}}</h3> <br>
       <img ng-if="post.post_type=='Pic'" class="pic" data-post_id="{{post.id}}" />
-      <div class="side-controll" ng-show="editable(post.user_id.id,post.posted_at)">
-        <a data-confirm="¿Seguro de que quieres borrarlo?" data-method="delete" href="/posts/{{post.id}}" rel="nofollow"><i class="fa fa-times-circle-o"> </i> Delete</a><br>
-        <a href="/posts/{{post.id}}/edit"><i class="fa fa-edit"></i> Edit</a>
+      <div class="side-controll">
+        <a ng-show="posted_at(post.user_id.id,post.posted_at) || owner(post.user_id.id,post.posted_at)" data-confirm="¿Seguro de que quieres borrarlo?" data-method="delete" href="/posts/{{post.id}}" rel="nofollow"><i class="fa fa-times-circle-o"> </i> Delete</a><br>
+        <a ng-show="owner(post.user_id.id,post.posted_at)" href="/posts/{{post.id}}/edit"><i class="fa fa-edit"></i> Edit</a>
       </div>
     </div>
   </div>

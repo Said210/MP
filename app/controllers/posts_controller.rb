@@ -33,7 +33,7 @@ class PostsController < ApplicationController
   def edit
     begin
       puts params[:id]
-      if(!post_belongs_user(params[:id], current_user.id) || !post_at_user(params[:id],current_user.id)) 
+      if(!post_belongs_user(params[:id], current_user.id)) 
         flash[:alert] = "You have no permison to do that"
         redirect_to :back
       end
@@ -118,7 +118,7 @@ end
     end
   end
   def post_at_user post_id_param, user_id_param
-    if(Post.find(post_id_param).posted_at == user_id_param)
+    if(Post.find(post_id_param).posted_at == user_id_param.to_s)
       return true
     else
       return false
