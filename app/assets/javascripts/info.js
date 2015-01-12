@@ -95,7 +95,7 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
             if(typeof(data) == 'object'){
                 $scope.friends = data;
                 if($scope.friends.length == 0){
-                    $scope.friends.push(JSON.parse('{"username":"No tienes seguidores, consigue algunos"}'));
+                    
                 }
             }else{
                 alert('Error al intentar recuperar los amigos.');

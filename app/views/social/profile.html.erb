@@ -80,9 +80,10 @@
   </div>
 
   <div id="section_3" class="section_inactive">
+  <h1 ng-if="friends.length == 0">Get some friends, dude!</h1>
     <div ng-repeat="f in friends">
       <a href="/u/{{f.user_id.username}}"><h2>{{f.user_id.username}} </h2></a>
-      </sub>
+      
     </div>
   </div>
 
