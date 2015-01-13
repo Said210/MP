@@ -12,11 +12,27 @@ class PostsController < ApplicationController
   def show
   end
 
+  def get_post_favs
+    f=Favs.where(post_id: params[:id]).all
+    @favs = [total: f.count]
+    @favs += [favorites: f]
+    respond_to do |format|
+      format.json { render json: @favs}
+    end
+  end
+
   def at_user
     ref_id=params[:id]
-    posts = Post.where(posted_at: ref_id).limit(10).order('created_at desc')
+    @posts = []
+    i = 0
+    posts = Post.where(posted_at: ref_id).select(:id,:user_id,:text,:posted_at,:post_type,:updated_at,:song_uri).limit(10).order('created_at desc')
+    posts.each { |post|
+      t_f = Favs.where(post_id: post.id).select(:user_id).all
+      @posts += [post: post, favs: t_f, total_favs: t_f.count]
+
+    }
     respond_to do |format|
-      format.json { render json: posts}
+      format.json { render json: @posts}
     end
   end
   def get_image_url
@@ -123,6 +139,25 @@ class PostsController < ApplicationController
       end
     end
   end
+
+  def user_favs_post
+    user_param = User.find(params[:user_id])
+    post_param = Post.find(params[:post_id])
+    res = Favs.where(post_id: post_param, user_id: user_param)[0]
+    if res.nil?
+      f=Favs.new
+      f.user_id=user_param
+      f.post_id=post_param
+      if f.save
+        render text: "Liked"
+      else
+        render text: "Faild"
+      end
+    else
+      res.destroy
+      render text: "Unliked"
+    end
+end
 
   private
     # Use callbacks to share common setup or constraints between actions.

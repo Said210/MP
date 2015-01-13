@@ -68,9 +68,11 @@ aplicacion.controller('Albums', function($scope, $http ) {
 aplicacion.controller('profile-panel', function($scope, $http ) {
 
     $scope.posts=[];
+    $scope.post_favs=[];
     $scope.friends=[];
     $scope.u_id=0;
     $scope.current_user_id=0;
+    $scope.aux=[];
     $scope.load_posts = function(){
         $http({
             method: 'GET', url: '/p/at/'+$scope.u_id+'.json'
@@ -78,6 +80,11 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
         success(function(data) {
             if(typeof(data) == 'object'){
                 $scope.posts = data;
+                for (var i = 0; i < $scope.posts.length; i++) {
+                    $scope.post_favs.push($scope.posts[i].favs);
+                    console.log($scope.posts[i].favs);
+                };
+                //alert("succed");
                 setTimeout(function() {setURLs();}, 1000);
             }else{
                 alert('Error al intentar recuperar los posts.');
@@ -88,6 +95,7 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
         error(function() {
             alert('Error al intentar recuperar los posts.');
         });
+
     }
     $scope.get_friends = function(){
         $http({
@@ -128,6 +136,22 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
         }else{
             return false;
         }
+    }
+    $scope.fav_post = function(me,i){
+        var result="{";
+        result=result+'"user_id": "'+$scope.current_user_id+'","post_id": "'+i+'"';
+        result=result+"}"
+        result=JSON.parse(result);
+        $.post("/p/fav",result).always(function(data){
+            if (data=="Liked") {
+                $("#post_fav_id_"+i).text("Unfav");
+                $("#post_fav_id_"+i).attr("class","Unfav");
+            };
+            if (data=="Unliked") {
+                $("#post_fav_id_"+i).text("Fav");
+                $("#post_fav_id_"+i).attr("class","");
+            };
+        });
     }
 });
 

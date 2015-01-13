@@ -68,19 +68,31 @@ function play_Btn(elem){
   <%end%>
 
   <div id="section_1" class="section_active">
+        {{post_favs[0][0].user_id.id}}
+    <div class="post" ng-repeat="item in posts | filter:search">
+      <img class="profile_post_pic" data-user_id="{{item.post.user_id.id}}">
+      <a href="/u/{{item.post.user_id.username}}"><h4>{{item.post.user_id.username}}</h4></a><h1></h1> <sub><abbr class="timeago" title="{{item.post.updated_at}}"></abbr></sub><br>
+      <div>
+        {{aux.push(post_favs[$index])}}
 
-    <div class="post" ng-repeat="post in posts | filter:search">
-      <img class="profile_post_pic" data-user_id="{{post.user_id.id}}">
-      <a href="/u/{{post.user_id.username}}"><h4>{{post.user_id.username}}</h4></a><h1></h1> <sub><abbr class="timeago" title="{{post.updated_at}}"></abbr></sub><br>
-
-      <h3>{{post.text}}</h3> <br>
-      <img ng-if="post.post_type=='Pic'" class="pic" data-post_id="{{post.id}}" />
-      <iframe ng-show="post.post_type=='Song'" id="{{post.song_uri}}" class="playButton attached_song" src="#" data-uris="{{post.song_uri}}" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
-
-      <div class="side-controll">
-        <a ng-show="posted_at(post.user_id.id,post.posted_at) || owner(post.user_id.id,post.posted_at)" data-confirm="¿Seguro de que quieres borrarlo?" data-method="delete" href="/posts/{{post.id}}" rel="nofollow"><i class="fa fa-times-circle-o"> </i> Delete</a><br>
-        <a ng-show="owner(post.user_id.id,post.posted_at)" href="/posts/{{post.id}}/edit"><i class="fa fa-edit"></i> Edit</a>
+        <div ng-repeat="fav in aux[$index]">
+          <b>{{fav.user_id.username}}</b>
+        </div>
       </div>
+      <h3>{{item.post.text}}</h3> <br>
+      <img ng-if="item.post.post_type=='Pic'" class="pic" data-post_id="{{item.post.id}}" />
+      <iframe ng-show="item.post.post_type=='Song'" id="{{item.post.song_uri}}" class="playButton attached_song" src="#" data-uris="{{item.post.song_uri}}" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+      <!--Side Bar Controll-->
+      <div class="side-controll">
+
+        <a ng-show="posted_at(item.post.user_id.id,item.post.posted_at) || owner(item.post.user_id.id,item.post.posted_at)" data-confirm="¿Seguro de que quieres borrarlo?" data-method="delete" href="/posts/{{item.post.id}}" rel="nofollow"><i class="fa fa-times-circle-o"> </i> Delete</a><br>
+
+        <a ng-show="owner(item.post.user_id.id,item.post.posted_at)" href="/posts/{{item.post.id}}/edit"><i class="fa fa-edit"></i> Edit</a><br>
+
+        <a href="javascript: void(0)" data-post_id="{{item.post.id}}" ng-click="fav_post(this, item.post.id)"><i class="fa fa-star"></i> <b id="post_fav_id_{{item.post.id}}_counter">{{item.total_favs}}</b> <span id="post_fav_id_{{item.post.id}}">Favs</span></a><br>
+      <!--End Of Side Bar Controll-->
+      </div>
+
     </div>
   </div>
   

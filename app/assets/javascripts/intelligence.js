@@ -28,7 +28,7 @@ aplicacion.controller('suggestions', function($scope, $http ) {
 	$scope.similar_artists_pics=[];
 	$scope.spotify_artists=[];
     $scope.dude_top_tracks=[];
-
+    
 	$scope.buscar = function(){
         
         var field=document.getElementById('LookFor').value;

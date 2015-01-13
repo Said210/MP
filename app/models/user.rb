@@ -10,5 +10,6 @@ class User < ActiveRecord::Base
 
   has_many :post
   has_many :friend
+  has_many :favs
   validates :username,uniqueness: { case_sensitive: false }
 end
