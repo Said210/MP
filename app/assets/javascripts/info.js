@@ -71,8 +71,7 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
     $scope.post_favs=[];
     $scope.friends=[];
     $scope.u_id=0;
-    $scope.current_user_id=0;
-    $scope.aux=[];
+    $scope.current_user_id=0;    
     $scope.load_posts = function(){
         $http({
             method: 'GET', url: '/p/at/'+$scope.u_id+'.json'

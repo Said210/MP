@@ -73,11 +73,7 @@ function play_Btn(elem){
       <img class="profile_post_pic" data-user_id="{{item.post.user_id.id}}">
       <a href="/u/{{item.post.user_id.username}}"><h4>{{item.post.user_id.username}}</h4></a><h1></h1> <sub><abbr class="timeago" title="{{item.post.updated_at}}"></abbr></sub><br>
       <div>
-        {{aux.push(post_favs[$index])}}
-
-        <div ng-repeat="fav in aux[$index]">
-          <b>{{fav.user_id.username}}</b>
-        </div>
+      
       </div>
       <h3>{{item.post.text}}</h3> <br>
       <img ng-if="item.post.post_type=='Pic'" class="pic" data-post_id="{{item.post.id}}" />
@@ -90,6 +86,13 @@ function play_Btn(elem){
         <a ng-show="owner(item.post.user_id.id,item.post.posted_at)" href="/posts/{{item.post.id}}/edit"><i class="fa fa-edit"></i> Edit</a><br>
 
         <a href="javascript: void(0)" data-post_id="{{item.post.id}}" ng-click="fav_post(this, item.post.id)"><i class="fa fa-star"></i> <b id="post_fav_id_{{item.post.id}}_counter">{{item.total_favs}}</b> <span id="post_fav_id_{{item.post.id}}">Favs</span></a><br>
+
+        <a href="javascript: void(0)">
+        Faved by:
+           <div ng-repeat="fav in post_favs[$index]">
+            <i ng-if="$index < 2">{{fav.user_id.username}}</i>
+          </div>
+        </a>
       <!--End Of Side Bar Controll-->
       </div>
 
@@ -99,6 +102,7 @@ function play_Btn(elem){
   <div id="section_2" class="section_inactive">
     <div>
       <h2>Nothing to see here, get off</h2>
+      <iframe src="https://embed.spotify.com/?uri=spotify:trackset:PREFEREDTITLE:5Z7ygHQo02SUrFmcgpwsKW,1x6ACsKV4UdWS2FMuPFUiT,4bi73jCM02fMpkI11Lqmfe" frameborder="0" height="380" allowtransparency="true"></iframe>
     </div>
   </div>
 
