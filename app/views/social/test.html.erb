@@ -1,0 +1,33 @@
+
+<div class="container shares" id="shares" ng-controller="SharesCtrl" ng-init="init()">
+<div class="share-container" ng-repeat="entry in entries">
+	<div>
+		<b>{{entry.sent_by.username}}: </b>
+		<pre>{{entry.message}}</pre>
+	</div>
+</div>
+</div> 
+ <%= form_for(@message)  do |f| %>
+	<% f.text_area :message %>
+	<input type="button" onclick="shot()">
+ <% end %>
+<script>
+ 
+aplicacion.factory('Shares', function() {
+  return {};
+});
+ 
+aplicacion.controller('SharesCtrl', function($scope, Shares) {
+   
+  $scope.init = function() {
+    var source = new EventSource('/live/test');
+    source.onmessage = function(event) {
+      $scope.$apply(function () {
+        $scope.entries = JSON.parse(event.data);
+        console.log(JSON.parse(event.data));
+      });
+    };
+  };
+ 
+});	
+</script>

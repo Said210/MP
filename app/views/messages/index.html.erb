@@ -1,0 +1,86 @@
+<script>
+	function shot(){
+		var to,by,mes;
+		to="<%= @listen_at %>";
+		mes=$("#message").val();
+		var params = '{"sent_to":"'+to+'", "message":"'+mes+'"}';
+		params=JSON.parse(params);
+		$.post("/api/message/send",params).always(function(data){console.log(data)});
+	}
+	function text_area_size(){
+		var c = $("#message").val().length;
+		$("#counter").text(200 - c);
+		var Cvalue= 200 - c;
+		if(Cvalue > 20){
+			$("#counter").attr("class", "std");
+		}
+		if(Cvalue < 20 && Cvalue > 00){
+			$("#counter").attr("class", "halfway");
+		}
+		if(Cvalue < 00){
+			$("#counter").attr("class", "danger");
+		}
+	}
+	$("#message").keyup(function(){text_area_size()});
+</script>
+<div class="container-message shares" id="shares" ng-controller="SharesCtrl" ng-init="init()">
+	<div class="" ng-repeat="entry in entries">
+		<div class="mine" ng-show="entry.sent_by.id == my_id">
+			<a href="/u/{{entry.sent_by.username}}"><b>{{entry.sent_by.username}}:</b></a>
+			<p>{{entry.message}}</p>
+		</div>
+		<div class="yours" ng-show="entry.sent_by.id != my_id">
+			<a href="/u/{{entry.sent_by.username}}"><b>{{entry.sent_by.username}}:</b></a>
+			<p>{{entry.message}}</p>
+		</div>
+	</div>
+	<hr>
+	<%= form_for(@message) do |f| %>
+		<%= f.text_area :message, id: :message, :onkeyup => "text_area_size()"%> <br>
+		<input type="button" value="Enviar" onclick="shot()">
+		<span class="std" id="counter">200</span>
+	<% end %>
+</div> 
+ 
+<script>
+ 
+aplicacion.factory('Shares', function() {
+  return {};
+});
+ 
+aplicacion.controller('SharesCtrl', function($scope, $http, Shares) {
+   $scope.entries = [];
+   $scope.prev_messages = [];
+   $scope.my_id = "<%=@u.id%>";
+  $scope.init = function() {
+  	$scope.prev();
+    var source = new EventSource('/live/<%= @listen_at %>');
+    source.onmessage = function(event) {
+      $scope.$apply(function () {
+        $scope.entries.push(JSON.parse(event.data));
+        if ($scope.entries.length > 20) {
+        	$scope.prev_messages.push($scope.entries[0]);
+        	$scope.entries.shift();
+        };
+      });
+    };
+  };
+
+  $scope.prev = function() {
+  	$http({
+        	method: 'GET', url: '/api/get/messages/<%=@listen_at%>'
+        }).
+        success(function(data) {
+            if(typeof(data) == 'object'){
+                $scope.entries = data;
+            }else{
+                alert('No se recuperaron los viejos mensajes.');
+            }
+        }).
+        error(function() {
+            alert('No se recuperaron los viejos mensajes por un error.');
+        });
+  }
+ 
+});	
+</script>

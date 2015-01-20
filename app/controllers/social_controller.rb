@@ -1,6 +1,8 @@
 class SocialController < ApplicationController
+  include ActionController::Live
 	before_action :authenticate_user!, only:[:me,:profile]
-  skip_before_filter :verify_authenticity_token, only:[:add]
+  skip_before_filter :verify_authenticity_token
+
   def me
     redirect_to '/u/'+current_user.username
   end
@@ -13,9 +15,8 @@ class SocialController < ApplicationController
 
   def likes
   end
-
   def profile
-
+    
     @post = Post.new
   	if current_user.username == params[:id]
       @u = current_user
@@ -26,6 +27,7 @@ class SocialController < ApplicationController
     end
     friends_list = Friend.where(user_id: @u.id)
     @friends = friends_list
+
   end
 
   def add

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sent_by: 1
+  sent_to: 1
+  message: MyString
+
+two:
+  sent_by: 1
+  sent_to: 1
+  message: MyString

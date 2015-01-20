@@ -53,6 +53,7 @@ function play_Btn(elem){
     <li class="active menu_btn" data-number="1"><b>{{posts.length}}</b> Posts</li>
     <li class="menu_btn" data-number="2">Enemies</li>
     <li class="menu_btn" ng-click="get_friends()" data-number="3"> <b>{{friends.length}}</b> Follower</li>
+    <%if !@me%><li><a href="/message/<%=@u.id%>">Get in touch</a></li><%end%>
   </ul>
   
 
@@ -61,9 +62,12 @@ function play_Btn(elem){
 
       <%= f.text_area :text, id: :post_place, :placeholder => "Un mensaje" %> <br>
       <img id="preview" />
+      <%= f.submit %>
+      &nbsp;
       <span class="add_pic" onclick="$( '#post_asset' ).trigger( 'click' );">
-      <%= f.submit %> <i class="fa fa-camera-retro"></i><span>Add pic</span></span>
-      
+       <i class="fa fa-camera-retro"></i><span>Add pic</span></span>
+       &nbsp;
+      <span class="add_pic" onclick="share_song(['text','song_uri','posted_at'],['!ask_for_text','spotify:track:77OuOZhDxJSQLYnNIpX2AG','<%= @u.id%>'])"><i class="fa fa-music"></i><span>Add Song (in development)</span></span>
     </div>
   <%end%>
 

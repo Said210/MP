@@ -2,7 +2,8 @@ class Post < ActiveRecord::Base
 	belongs_to :user_id, :class_name=>"User", :foreign_key=>"user_id"
 	
 	has_attached_file :asset, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
-
+	validates :text, :length => { :minimum => 1,
+								  :maximum => 200 }
 	has_many :favs
 
 	validates :asset, :attachment_presence => false
