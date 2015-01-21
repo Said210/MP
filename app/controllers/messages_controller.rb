@@ -37,6 +37,28 @@ class MessagesController < ApplicationController
   	render nothing: true
   end
 
+  def profile_chat_monitor
+    response.headers['Content-Type'] = 'text/event-stream'
+    sse = SSE.new(response.stream)
+  begin
+    Message.on_change do |data|
+      message = Message.find(data)
+      if( sent_to_me(message) )
+        puts "monitor acceped"
+        message = message.to_json
+        sse.write(message)
+      else
+        puts "monitor denied"
+      end
+
+    end
+    rescue IOError
+    ensure
+      sse.close
+    end
+    render nothing: true
+  end
+
   def create
   	m = Message.new
   	m.sent_to = User.find(params[:sent_to])
@@ -59,6 +81,13 @@ class MessagesController < ApplicationController
 
   def sent_to_me_by (message, ide)
     if message.sent_by == User.find(ide) && message.sent_to == User.find(current_user.id)
+      return true
+    else
+      return false
+    end
+  end
+  def sent_to_me (message)
+    if message.sent_to == User.find(current_user.id)
       return true
     else
       return false

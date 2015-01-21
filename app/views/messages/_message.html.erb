@@ -1,9 +1,0 @@
-<li class="">
-  <%= link_to image_tag(message.sent_by.avatar.url(:thumb), alt: message.sent_by.username, class: ""),
-              profile_path(message.sent_by.id), target: '_blank', class: 'pull-left' %>
-  <div class="media-body">
-    <h4 class="media-heading"><%= link_to message.sent_by.username, profile_path(message.sent_by.id), target: '_blank' %> says
-      <small class="text-muted">[at <%= message.created_at %>]</small></h4>
-    <p><%= message.message %></p>
-  </div>
-</li>

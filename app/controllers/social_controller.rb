@@ -71,4 +71,5 @@ class SocialController < ApplicationController
     render inline: "<%= @user.avatar.url(:thumb) %>"
   end
 
+
 end

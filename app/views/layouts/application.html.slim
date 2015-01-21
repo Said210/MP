@@ -13,11 +13,14 @@ html ng-app="appl"
   - # Use the body_classes helper to add classes to the body from views  
   body class="#{if content_for?(:body_classes) then yield(:body_classes)}"
     == render 'elements/navigation'
+    #notif-panel
+        
     .container == yield
     -unless notice.nil?
         .notice = notice
     -unless alert.nil?
         .alert = alert
+
 
     audio#ply style="display:none" controls="false" preload="auto" src="" 
     

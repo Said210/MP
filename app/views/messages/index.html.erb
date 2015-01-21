@@ -27,11 +27,11 @@
 	<div class="" ng-repeat="entry in entries">
 		<div class="mine" ng-show="entry.sent_by.id == my_id">
 			<a href="/u/{{entry.sent_by.username}}"><b>{{entry.sent_by.username}}:</b></a>
-			<p>{{entry.message}}</p>
+			<p>{{entry.message}} <br> {{my_pic}}	</p>
 		</div>
 		<div class="yours" ng-show="entry.sent_by.id != my_id">
 			<a href="/u/{{entry.sent_by.username}}"><b>{{entry.sent_by.username}}:</b></a>
-			<p>{{entry.message}}</p>
+			<p>{{entry.message}} <br> {{his_pic}}</p>
 		</div>
 	</div>
 	<hr>
@@ -52,13 +52,18 @@ aplicacion.controller('SharesCtrl', function($scope, $http, Shares) {
    $scope.entries = [];
    $scope.prev_messages = [];
    $scope.my_id = "<%=@u.id%>";
+   $scope.my_pic = "";
+   $scope.his_pic = "";
+
   $scope.init = function() {
   	$scope.prev();
+	$scope.my_pic = $scope.get_pp("<%=@u.id%>");
+  	$scope.his_pic = $scope.get_pp("<%=@listen_at%>");
     var source = new EventSource('/live/<%= @listen_at %>');
     source.onmessage = function(event) {
       $scope.$apply(function () {
         $scope.entries.push(JSON.parse(event.data));
-        if ($scope.entries.length > 20) {
+        if ($scope.entries.length > 15) {
         	$scope.prev_messages.push($scope.entries[0]);
         	$scope.entries.shift();
         };
@@ -79,6 +84,14 @@ aplicacion.controller('SharesCtrl', function($scope, $http, Shares) {
         }).
         error(function() {
             alert('No se recuperaron los viejos mensajes por un error.');
+        });
+  }
+  $scope.get_pp = function(id){
+  	$http({
+  			method: 'GET', url: '/api/u/get/pic/'+id
+        }).success(function(data) {
+        	return data;
+        	console.log(data);
         });
   }
  

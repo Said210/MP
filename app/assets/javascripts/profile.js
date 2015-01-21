@@ -1,77 +1,12 @@
-var aplicacion = angular.module('appl', []);
-var loaded=false;
-aplicacion.controller('Albums', function($scope, $http ) {
-
-    $scope.id = null;
-    $scope.nombre = '';
-    $scope.Spotify_albums = [];
-    $scope.Deezer_albums = [];
-    $scope.Spotify_album_tracks = [];
-
-    $scope.cargarAlbums = function(id){
-        $http({
-            method: 'GET', url: 'https://api.spotify.com/v1/artists/'+id+'/albums'
-        }).
-        success(function(data) {
-            if(typeof(data) == 'object'){
-                $scope.Spotify_albums = data.items;
-            }else{
-                alert('Error al intentar recuperar los datos de spotify.');
-            }
-        }).
-        error(function() {
-            alert('Error al intentar recuperar los datos de spotify.');
-        });
-    };
-
-    $scope.showTracks = function(parame){
-        $http({
-            method: 'GET', url: 'https://api.spotify.com/v1/albums/'+parame+''
-        }).success(function(data) {
-            if(typeof(data) == 'object'){
-                $scope.Spotify_album_tracks = data.tracks.items;
-                setTimeout(function() {setURLs();}, 1000);
-            }else{
-                alert('Error al intentar recuperar los datos de spotify 1.');
-            }
-        }).error(function(d) {
-            alert('Error al intentar recuperar los datos de spotify.');
-            console.log('https://api.spotify.com/v1/albums/'+parame);
-        });
-    };
-
-    $scope.lookFor = function(){
-        var field=document.getElementById('LookFor').value;
-        $http({
-            method: 'GET', url: 'https://api.spotify.com/v1/search?q='+field+'&type=artist,album,track'
-        }).
-        success(function(data) {
-            if(typeof(data) == 'object'){
-                $scope.Spotify_albums = data.albums;
-            }else{
-                alert('Error al intentar recuperar los datos de spotify.');
-            }
-        }).
-        error(function() {
-            alert('Error al intentar recuperar los datos de spotify.');
-        });
-    };
-
-    $scope.playPreview = function(SongURL){
-        var player=document.getElementById("ply")
-        player.src=SongURL;
-        player.play();
-    }
-});
-    
-
 aplicacion.controller('profile-panel', function($scope, $http ) {
 
     $scope.posts=[];
     $scope.post_favs=[];
     $scope.friends=[];
     $scope.u_id=0;
-    $scope.current_user_id=0;    
+    $scope.current_user_id=0;
+    $scope.entries = [];
+
     $scope.load_posts = function(){
         $http({
             method: 'GET', url: '/p/at/'+$scope.u_id+'.json'
@@ -83,13 +18,12 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
                     $scope.post_favs.push($scope.posts[i].favs);
                     console.log($scope.posts[i].favs);
                 };
-                //alert("succed");
                 setTimeout(function() {setURLs();}, 1000);
             }else{
-                alert('Error al intentar recuperar los posts.');
+                //alert('Error al intentar recuperar los posts.');
             }
             loaded=false;
-            setTimeout(function() {post_load_images();}, 2000);
+            setTimeout(function() {post_load_images();}, 600);
         }).
         error(function() {
             alert('Error al intentar recuperar los posts.');
@@ -120,6 +54,7 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
         $scope.current_user_id=c_u_id;
         $scope.get_friends();
         $scope.load_posts();
+        $scope.watch_new();
     }
     $scope.owner = function(user_id_param, posted_at_param){
         if($scope.current_user_id==user_id_param){
@@ -152,6 +87,27 @@ aplicacion.controller('profile-panel', function($scope, $http ) {
             };
         });
     }
+    $scope.watch_new = function() {
+        var source = new EventSource('/watch/messages');
+        var tmp, render;
+        render = "<div class='notif'><b>?: </b><br><span>%</span>";
+        source.onmessage = function(event) {
+            $scope.$apply(function () {
+                $scope.entries.push(JSON.parse(event.data));
+                console.log(JSON.parse(event.data));
+                tmp = JSON.parse(event.data);
+                render = render.replace("?",tmp.sent_by.username);
+                render = render.replace("%",tmp.message);
+                $("#notif-panel").append(render);
+                render = "<div class='notif'><b>?</b><br><span>%</span>";
+                if ($scope.entries.length > 20) {
+                    $scope.prev_messages.push($scope.entries[0]);
+                    $scope.entries.shift();
+                };
+            });
+        };
+    };
+
 });
 
 
@@ -198,7 +154,7 @@ var get_foreign_profile_post_images_urls = function(index){
         }).always(function() {
             console.log("Profile pic for get_for... -> @"+ids[index]);
         });
-    },400*index);
+    },100*index);
 }
 
 function readURL(input) {
@@ -211,29 +167,3 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
-
-function share_song(keys,values){
-    var result="{";
-    if(keys.length == values.length){
-        if (keys.indexOf("text") == -1) {
-            keys.push("text");
-            values.push("");
-        }else{
-            if (values[keys.indexOf("text")] == "!ask_for_text") {
-                values[keys.indexOf("text")] = prompt("Please enter your message", "");
-            };
-        };
-
-        for (var i = 0; i < keys.length; i++) {
-            result=result+'"'+keys[i]+'": "'+values[i]+'"';
-            if (i<keys.length - 1) {result=result+", "};
-        };
-        result=result+"}";
-        result=JSON.parse(result);
-        $.post("/p/create",result).always(function(data){
-            alert(data);
-        });
-    }
-    
-}
-
