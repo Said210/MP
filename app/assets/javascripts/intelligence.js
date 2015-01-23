@@ -26,6 +26,7 @@ aplicacion.controller('advanced_search', function($scope, $http ) {
         var seed = [];
         var art_param = "";
         var tmp = "";
+        adv_songs_ids = [];
         seed = art.split(",");
         for (var i = 0; i < seed.length; i++) {
             art_param = art_param + "&artist=" + seed[i];
