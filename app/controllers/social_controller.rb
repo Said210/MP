@@ -70,6 +70,4 @@ class SocialController < ApplicationController
     @user = User.find(params[:id])
     render inline: "<%= @user.avatar.url(:thumb) %>"
   end
-
-
 end

@@ -12,11 +12,11 @@ default: &default
 development:
   adapter: postgresql
   encoding: unicode
-  database: d44g8np6h29tbj
+  database: MP_development
   pool: 16
-  username: yuluaflataahhh
-  password: IaVBv3HjbUK08Z7z5aWXXzOjkM
-  host: ec2-50-16-190-77.compute-1.amazonaws.com
+  username: postgres
+  password: notion21
+  host: localhost
   port: 5432
 
 # Warning: The database defined as "test" will be erased and

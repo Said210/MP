@@ -1,7 +1,8 @@
 aplicacion.controller('advanced_search', function($scope, $http ) {
-    $scope.advanced_artists=[];
+    $scope.adv_songs = [];
+    $scope.adv_songs_ids = [];
 
-    $scope.advanced_search=function(){
+    /*$scope.advanced_search=function(){
         var style=$('input[name="style"]:checked').val();
         var limit=document.getElementById('results').value;
         var mood=$('input[name="mood"]:checked').val();
@@ -17,6 +18,33 @@ aplicacion.controller('advanced_search', function($scope, $http ) {
         }).
         error(function() {
             alert('Error al intentar recuperar los datos de spotify.');
+        });
+        //id=id.split(':')[2];
+    }*/
+    $scope.smart_playisting = function(){
+        var art = $('#artist').val();
+        var seed = [];
+        var art_param = "";
+        var tmp = "";
+        seed = art.split(",");
+        for (var i = 0; i < seed.length; i++) {
+            art_param = art_param + "&artist=" + seed[i];
+        };
+        art_param = art_param.replace(/\s/g,"+");
+        var limit = $('#results').val();
+        var sort_by = $('form input[name=sort_by]:checked').val();
+        console.log('http://developer.echonest.com/api/v4/playlist/static?api_key=ZCSQWTH1IHKZYUWVX'+art_param+'&bucket=id:spotify&format=json&results='+limit+'&type=artist-radio&bucket=tracks&sort='+sort_by);
+        $http({
+            method: 'GET', url: 'http://developer.echonest.com/api/v4/playlist/static?api_key=ZCSQWTH1IHKZYUWVX'+art_param+'&bucket=id:spotify&format=json&results='+limit+'&type=artist-radio&bucket=tracks&sort='+sort_by
+        }).success(function(data){
+            $scope.adv_songs = data.response.songs;
+            for (var i = 0; i < $scope.adv_songs.length; i++) {
+                tmp = $scope.adv_songs[i].tracks[0].foreign_id;
+                $scope.adv_songs_ids.push(tmp.split(':')[2]);
+            };
+            build_playlist($scope.adv_songs_ids);
+        }).error(function(){
+            alert("failed");
         });
     }
 
@@ -126,3 +154,12 @@ function setURLs(){
     function play_Btn(elem){
         $(elem).attr("src","https://embed.spotify.com/?uri="+$(elem).data("uris"));
     }
+function build_playlist(elems){
+    alert("ejec");
+    var uri = "";
+    for (var i = 0; i < elems.length; i++) {
+        if(uri != elems.length-1){ uri = uri + elems[i] + ","; }
+    };
+    alert(uri);
+    $("#playlisting").attr("src","https://embed.spotify.com/?uri=spotify:trackset:PREFEREDTITLE:"+uri);
+}

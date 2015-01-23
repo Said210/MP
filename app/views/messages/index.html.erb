@@ -23,23 +23,38 @@
 	}
 	$("#message").keyup(function(){text_area_size()});
 </script>
-<div class="container-message shares" id="shares" ng-controller="SharesCtrl" ng-init="init()">
-	<div class="" ng-repeat="entry in entries">
-		<div class="mine" ng-show="entry.sent_by.id == my_id">
-			<a href="/u/{{entry.sent_by.username}}"><b>{{entry.sent_by.username}}:</b></a>
-			<p>{{entry.message}} <br> {{my_pic}}	</p>
-		</div>
-		<div class="yours" ng-show="entry.sent_by.id != my_id">
-			<a href="/u/{{entry.sent_by.username}}"><b>{{entry.sent_by.username}}:</b></a>
-			<p>{{entry.message}} <br> {{his_pic}}</p>
-		</div>
-	</div>
+<style type="text/css">
+  body{
+    background-image: linear-gradient(to bottom, #315481, #918E82 100%);
+    .shares{
+      height: 500px;
+      overflow-y: scroll;
+      background-color: #fff;
+    }
+    .container-message{
+      background-color: #fff;
+    }
+  }
+</style>
+<div class="container-message" id="shares" ng-controller="SharesCtrl" ng-init="init()">
+<div class="shares">
+  	<div class="" ng-repeat="entry in entries">
+  		<div class="mine" ng-show="entry.sent_by.id == my_id">
+  			<a href="/u/{{entry.sent_by.username}}"><b>{{entry.sent_by.username}}:</b></a>
+  			<p>{{entry.message}} <br> {{my_pic}}	</p>
+  		</div>
+  		<div class="yours" ng-show="entry.sent_by.id != my_id">
+  			<a href="/u/{{entry.sent_by.username}}"><b>{{entry.sent_by.username}}:</b></a>
+  			<p>{{entry.message}} <br> {{his_pic}}</p>
+  		</div>
+  	</div>
 	<hr>
-	<%= form_for(@message) do |f| %>
-		<%= f.text_area :message, id: :message, :onkeyup => "text_area_size()"%> <br>
-		<input type="button" value="Enviar" onclick="shot()">
-		<span class="std" id="counter">200</span>
-	<% end %>
+  </div>
+  <%= form_for(@message) do |f| %>
+    <%= f.text_area :message, id: :message, :onkeyup => "text_area_size()"%> <br>
+    <input type="button" value="Enviar" onclick="shot()">
+    <span class="std" id="counter">200</span>
+  <% end %>
 </div> 
  
 <script>
