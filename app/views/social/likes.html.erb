@@ -1,2 +1,20 @@
+<script src="http://fb.me/react-0.12.2.js"></script>
+<script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
 <h1>Social#likes</h1>
 <p>Find me in app/views/social/likes.html.erb</p>
+<div id="test"></div>
+
+<script type="text/jsx">
+	var Test = React.createClass({
+		render: function() {
+			return (
+				<h1 class="Test">TEST</h1>
+			);
+		}
+	});
+	
+	React.render(
+		<Test />,
+		document.getElementById('test')
+	)
+</script>

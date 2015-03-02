@@ -9,4 +9,10 @@ class Post < ActiveRecord::Base
 	validates :asset, :attachment_presence => false
 	validates_with AttachmentSizeValidator, :attributes => :asset, :less_than => 2.megabytes
 	validates_with AttachmentContentTypeValidator, :attributes => :asset, :content_type => ["image/jpeg", "image/png", "image/gif"]
+
+	class << self
+		def fetch_data
+			
+		end
+	end
 end

@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     get '/api/get/messages/:id' => 'messages#history'
     get '/message/:id' => 'messages#index'
     post '/api/message/send' => 'messages#create' # Sends a message
-    get '/live/:id' => 'messages#live'
+    get '/live/:id/:me' => 'messages#live'
     get '/l_sc' => 'welcome#loading'
   #end
 

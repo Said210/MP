@@ -74,7 +74,7 @@ function play_Btn(elem){
   <div id="section_1" class="section_active">
         {{post_favs[0][0].user_id.id}}
     <div class="post" ng-repeat="item in posts | filter:search">
-      <img class="profile_post_pic" data-user_id="{{item.post.user_id.id}}">
+      <img class="profile_post_pic" src="{{item.post.user_id.avatar_file_name}}">
       <a href="/u/{{item.post.user_id.username}}"><h4>{{item.post.user_id.username}}</h4></a><h1></h1> <sub><abbr class="timeago" title="{{item.post.updated_at}}"></abbr></sub><br>
       <div>
       

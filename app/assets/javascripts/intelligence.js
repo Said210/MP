@@ -1,26 +1,8 @@
+
 aplicacion.controller('advanced_search', function($scope, $http ) {
     $scope.adv_songs = [];
     $scope.adv_songs_ids = [];
-
-    /*$scope.advanced_search=function(){
-        var style=$('input[name="style"]:checked').val();
-        var limit=document.getElementById('results').value;
-        var mood=$('input[name="mood"]:checked').val();
-        $http({
-            method: 'GET', url: 'https://api.spotify.com/v1/search?q='+field+'&type=artist'
-        }).
-        success(function(data) {
-            if(typeof(data) == 'object'){
-                $scope.spotify_artists = data.artists;
-            }else{
-                alert('Error al intentar recuperar los datos de spotify.');
-            }
-        }).
-        error(function() {
-            alert('Error al intentar recuperar los datos de spotify.');
-        });
-        //id=id.split(':')[2];
-    }*/
+    $scope.deezer_adv_songs_ids = [];
     $scope.smart_playisting = function(){
         var art = $('#artist').val();
         var seed = [];
@@ -34,21 +16,67 @@ aplicacion.controller('advanced_search', function($scope, $http ) {
         art_param = art_param.replace(/\s/g,"+");
         var limit = $('#results').val();
         var sort_by = $('form input[name=sort_by]:checked').val();
-        console.log('http://developer.echonest.com/api/v4/playlist/static?api_key=ZCSQWTH1IHKZYUWVX'+art_param+'&bucket=id:spotify&format=json&results='+limit+'&type=artist-radio&bucket=tracks&sort='+sort_by);
+        var spotify_url = 'http://developer.echonest.com/api/v4/playlist/static?api_key=ZCSQWTH1IHKZYUWVX'+art_param+'&bucket=id:spotify&bucket=id:deezer&format=json&results='+limit+'&type=artist-radio&bucket=tracks&sort='+sort_by;
+        var deezer_url = 'http://developer.echonest.com/api/v4/playlist/static?api_key=ZCSQWTH1IHKZYUWVX'+art_param+'&bucket=id:deezer&format=json&results='+limit+'&type=artist-radio&bucket=tracks&sort='+sort_by;
+        console.log(spotify_url);
+        $scope.spotify(spotify_url);
+        //$scope.deezer(deezer_url);
+    }
+    $scope.spotify = function(url){
         $http({
-            method: 'GET', url: 'http://developer.echonest.com/api/v4/playlist/static?api_key=ZCSQWTH1IHKZYUWVX'+art_param+'&bucket=id:spotify&format=json&results='+limit+'&type=artist-radio&bucket=tracks&sort='+sort_by
+            method: 'GET', url: url
         }).success(function(data){
             $scope.adv_songs = data.response.songs;
             for (var i = 0; i < $scope.adv_songs.length; i++) {
-                tmp = $scope.adv_songs[i].tracks[0].foreign_id;
-                $scope.adv_songs_ids.push(tmp.split(':')[2]);
+                if($scope.adv_songs[i].tracks.length != 0){
+                    var spo_found = false;
+                    var dz_found = false;
+                    for (var j = 0; j < $scope.adv_songs[i].tracks.length; j++) {
+                        tmp = $scope.adv_songs[i].tracks[j].foreign_id;
+                        
+                        if ($scope.adv_songs[i].tracks[j].catalog == "spotify" && !spo_found){
+                            $scope.adv_songs_ids.push(tmp.split(':')[2]);
+                            console.log("sp => "+tmp.split(':')[2]);
+                            spo_found = true;
+                        }
+                        
+                        if ($scope.adv_songs[i].tracks[j].catalog == "deezer" && !dz_found){
+                            $scope.deezer_adv_songs_ids.push(tmp.split(':')[2]);
+                            console.log("dz => "+tmp.split(':')[2]);
+                            spo_found = true;
+                        }
+                        if(spo_found && dz_found){break;}
+
+                    };
+                    
+                }
             };
-            build_playlist($scope.adv_songs_ids);
+            //build_playlist($scope.adv_songs_ids);
         }).error(function(){
-            alert("failed");
+            alert("spotify failed");
         });
     }
+    /*$scope.deezer = function(url){
+        $scope.adv_songs = [];
+        $http({
+            method: 'GET', url: url
+        }).success(function(data){
+            $scope.adv_songs = data.response.songs;
+            console.log($scope.adv_songs);
+            for (var i = 0; i < $scope.adv_songs.length; i++) {
+                if($scope.adv_songs[i].tracks.length != 0){
+                    console.log(i);
+                    tmp = $scope.adv_songs[i].tracks[0].foreign_id;
+                    console.log(tmp);
+                    $scope.deezer_adv_songs_ids.push(tmp.split(':')[2]);
+                }
 
+            };
+            //build_playlist($scope.deezer_adv_songs_ids);
+        }).error(function(){
+            alert("deezer failed");
+        });
+    }*/
 });
 
 aplicacion.controller('suggestions', function($scope, $http ) {
@@ -155,12 +183,21 @@ function setURLs(){
     function play_Btn(elem){
         $(elem).attr("src","https://embed.spotify.com/?uri="+$(elem).data("uris"));
     }
-function build_playlist(elems){
-    alert("ejec");
-    var uri = "";
-    for (var i = 0; i < elems.length; i++) {
-        if(uri != elems.length-1){ uri = uri + elems[i] + ","; }
-    };
-    alert(uri);
-    $("#playlisting").attr("src","https://embed.spotify.com/?uri=spotify:trackset:PREFEREDTITLE:"+uri);
+function build_playlist(){
+    var spotify_uri = "";
+    var deezer_uri = "";
+    $(".songs_to_play").each(function(){
+        spotify_uri = spotify_uri + $(this).data("spotify") + ",";
+    });
+    $(".songs_to_play").each(function(){
+        deezer_uri = deezer_uri + $(this).data("deezer") + ",";
+    });
+    spotify_uri = spotify_uri.substr(0, spotify_uri.length-1);
+    deezer_uri = deezer_uri.substr(0, deezer_uri.length-1);
+
+    console.log("spo => "+spotify_uri);
+    console.log("deezer => "+deezer_uri);
+    $("#playlisting").attr("src","https://embed.spotify.com/?uri=spotify:trackset:MUTEPLAYLIST:"+spotify_uri);
+    $("#deezerPlaylist").attr("src","http://www.deezer.com/plugins/player?autoplay=false&playlist=true&width=270&height=300&cover=true&title=MUTEPLAYLIST&format=horizontal&app_id=139673&type=tracks&id="+deezer_uri);
+    
 }

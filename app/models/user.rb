@@ -12,4 +12,16 @@ class User < ActiveRecord::Base
   has_many :friend
   has_many :favs
   validates :username,uniqueness: { case_sensitive: false }
+
+  def get_pp_of(index)
+    @user = User.find(index)
+    return @user.avatar.url(:thumb)
+  end
+  class << self
+    def get_usable_values index
+      user = User.find_by(username: index)
+      user.avatar_file_name = user.avatar.url(:thumb)
+      return user
+    end
+  end
 end

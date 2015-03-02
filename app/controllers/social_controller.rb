@@ -19,7 +19,7 @@ class SocialController < ApplicationController
     
     @post = Post.new
   	if current_user.username == params[:id]
-      @u = current_user
+      @u = User.find(current_user.id)
       @me = true  
     else
       @u = User.find_by(username: params[:id])

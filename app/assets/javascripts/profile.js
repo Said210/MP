@@ -129,9 +129,6 @@ var post_load_images = function(){
         for(var ind=0; ind < ids.length ;ind++){
             get_foreign_post_images_urls(ind);
         };
-        for (var ind = 0; ind < user_ids.length; ind++) {
-            get_foreign_profile_post_images_urls(ind);
-        };
     }
     loaded=true;
 }
@@ -144,21 +141,8 @@ var get_foreign_post_images_urls = function(index){
             console.log("Get_for... -> @"+ids[index]);
         });
 }
-var get_foreign_profile_post_images_urls = function(index){
-    setTimeout(function(){
-    $.get( "/api/u/get/pic/"+user_ids[index]).done(function( data ) {
-            profile_post_pics[index].attr("src",data);
-        }).fail(function(data){
-            console.log("ERROR! ");
-            console.log(data);
-        }).always(function() {
-            console.log("Profile pic for get_for... -> @"+ids[index]);
-        });
-    },100*index);
-}
 
 function readURL(input) {
-
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {

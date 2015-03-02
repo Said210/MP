@@ -6,6 +6,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
+    headers['Access-Control-Allow-Origin'] = "*"
     @posts = Post.all
   end
 
@@ -15,6 +16,7 @@ class PostsController < ApplicationController
   end
 
   def get_post_favs
+    headers['Access-Control-Allow-Origin'] = "*"
     f=Favs.where(post_id: params[:id]).all
     @favs = [total: f.count]
     @favs += [favorites: f]
@@ -24,12 +26,14 @@ class PostsController < ApplicationController
   end
 
   def at_user
+    headers['Access-Control-Allow-Origin'] = "*"
     ref_id=params[:id]
     @posts = []
     i = 0
     posts = Post.where(posted_at: ref_id).select(:id,:user_id,:text,:posted_at,:post_type,:updated_at,:song_uri).limit(10).order('created_at desc')
     posts.each { |post|
       t_f = Favs.where(post_id: post.id).select(:user_id).all
+      post.user_id.avatar_file_name = post.user_id.avatar.url(:thumb)
       @posts += [post: post, favs: t_f, total_favs: t_f.count]
 
     }
@@ -38,6 +42,7 @@ class PostsController < ApplicationController
     end
   end
   def get_image_url
+    headers['Access-Control-Allow-Origin'] = "*"
     @post = Post.find(params[:id])
     render inline: "<%= @post.asset.url(:medium) %>"
   end

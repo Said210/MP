@@ -1,3 +1,14 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+
+		<script type="text/javascript" src="http://cdn-files.deezer.com/js/min/dz.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$( "#playlist" ).sortable();
+	    $( "#playlist" ).disableSelection();
+    });
+    
+</script>
 <div ng-controller="advanced_search" style="width:40%; margin-left:30%">
 	<form action="javascript: void(0)">
 	<fieldset>
@@ -22,10 +33,72 @@
 			<input type="radio" name="sort_by" value="danceability-desc"> danceability <br>
 			<input type="radio" name="sort_by" value="artist_familiarity-desc"> artist familiarity <br>
 		</fieldset>
-		<p align="center"><button ng-click="smart_playisting()">Enviar</button></p>
+		<p align="center"><button ng-click="smart_playisting()">Enviar</button> <button onclick="build_playlist()">CREAR LISTAS</button></p>
 	</form>
-	<div ng-repeat="so in adv_songs">
-		<b>{{so.title}}</b>-{{so.artist_name}}
+	<ul id="playlist" type="none">
+		<li ng-repeat="so in adv_songs" class="songs_to_play" data-spotify="{{adv_songs_ids[$index]}}" data-deezer="{{deezer_adv_songs_ids[$index]}}">
+			<b>{{so.title}}</b>-{{so.artist_name}}
+		</li>
+	</ul>
+	<h4>Puede que algunas canciones no estén disponibles en alguna plataforma</h4>
+	<iframe id="playlisting" class="playButton" src="/l_sc" width="80" height="80" frameborder="0" allowtransparency="true"></iframe>
+	<iframe id="deezerPlaylist" scrolling="no" frameborder="0" allowTransparency="true" src="/l_sc" width="80" height="80"></iframe>
+	
+	<div id="dz-root"></div>
+	<div id="controlers">
+		<input type="button" onclick="pll()" id="dzdata" data-dz="{{deezer_adv_songs_ids}}" value="SSS"/>
+		<input type="button" onclick="DZ.player.playTracks(301775); return false;" value="Play Daft Punk - Homework"/>
+		<br/>
+		<input type="button" onclick="DZ.player.play(); return false;" value="play"/>
+		<input type="button" onclick="DZ.player.pause(); return false;" value="pause"/>
+		<input type="button" onclick="DZ.player.prev(); return false;" value="prev"/>
+		<input type="button" onclick="DZ.player.next(); return false;" value="next"/>
+		<br/>
+		<input type="button" onclick="DZ.player.setVolume(20); return false;" value="set Volume 20"/>
+		<input type="button" onclick="DZ.player.setVolume(80); return false;" value="set Volume 80"/>
+		<br/><br/><br/>
 	</div>
-	<iframe id="playlisting" class="playButton" src="/l_sc" width="300" height="500" frameborder="0" allowtransparency="true"></iframe>
+	<div id="slider_seek" class="progressbarplay" style="">
+	  <div class="bar" style="width: 0%;"></div>
+	</div>
+	<script>
+		function pll(){
+			DZ.player.playTracks($("#dzdata").data("dz")); return false;
+		}
+		$(document).ready(function(){
+			$("#controlers input").attr('disabled', true);
+			$("#slider_seek").click(function(evt,arg){
+				var left = evt.offsetX;
+				console.log(evt.offsetX, $(this).width(), evt.offsetX/$(this).width());
+				DZ.player.seek((evt.offsetX/$(this).width()) * 100);
+			});
+		});
+		function event_listener_append() {
+			var pre = document.getElementById('event_listener');
+			var line = [];
+			for (var i = 0; i < arguments.length; i++) {
+				line.push(arguments[i]);
+			}
+			pre.innerHTML += line.join(' ') + "\n";
+		}
+		function onPlayerLoaded() {
+			$("#controlers input").attr('disabled', false);
+			event_listener_append('player_loaded');
+			DZ.Event.subscribe('current_track', function(arg){
+				event_listener_append('current_track', arg.index, arg.track.title, arg.track.album.title);
+			});
+			DZ.Event.subscribe('player_position', function(arg){
+				event_listener_append('position', arg[0], arg[1]);
+				$("#slider_seek").find('.bar').css('width', (100*arg[0]/arg[1]) + '%');
+			});
+		}
+		DZ.init({
+	        appId  : ' 139673',
+	        channelUrl : 'http://developers.deezer.com/examples/channel.php',
+	        player : {
+	            onload : onPlayerLoaded
+	        }
+	    });
+		
+	</script>
 </div>
