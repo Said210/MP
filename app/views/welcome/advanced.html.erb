@@ -7,13 +7,33 @@
 		$( "#playlist" ).sortable();
 	    $( "#playlist" ).disableSelection();
     });
+    $('#search_form').submit(function(e) {
+    	e.preventDefault();
+    	return false;
+    });
     
 </script>
+<style>
+	.option{
+		border: 1px solid #333;
+		padding: 10px;
+		display: table-row;
+		background-color: #f9f9f9;
+	}
+	.active{
+		background-color: rgba(50,50,200,.5);
+	}
+</style>
 <div ng-controller="advanced_search" style="width:40%; margin-left:30%">
-	<form action="javascript: void(0)">
+	<form id="search_form" action="javascript: void(0)">
 	<fieldset>
 		<legend>Artists:</legend>
-			<input type="text" required="true" id="artist">
+			<input type="text" required="true" id="artist" ng-keyup="suggestArtist($event)" autocomplete="off">
+			<div id="suggestions">
+				<div ng-repeat="s in suggestions" id="n{{$index}}" class="option">
+					{{ s.name }}
+				</div>
+			</div>
 		<!--
 			<input type="radio" name="style" value="indie"> Indie |
 			<input type="radio" name="style" value="pop">	Pop <br>
@@ -33,6 +53,7 @@
 			<input type="radio" name="sort_by" value="danceability-desc"> danceability <br>
 			<input type="radio" name="sort_by" value="artist_familiarity-desc"> artist familiarity <br>
 		</fieldset>
+		<button style="display:none"></button>
 		<p align="center"><button ng-click="smart_playisting()">Enviar</button> <button onclick="build_playlist()">CREAR LISTAS</button></p>
 	</form>
 	<ul id="playlist" type="none">
@@ -41,13 +62,13 @@
 		</li>
 	</ul>
 	<h4>Puede que algunas canciones no estén disponibles en alguna plataforma</h4>
-	<iframe id="playlisting" class="playButton" src="/l_sc" width="80" height="80" frameborder="0" allowtransparency="true"></iframe>
-	<iframe id="deezerPlaylist" scrolling="no" frameborder="0" allowTransparency="true" src="/l_sc" width="80" height="80"></iframe>
+	<iframe id="playlisting" class="playButton" src="/l_sc" width="480" height="480" frameborder="0" allowtransparency="true"></iframe>
+	<iframe id="deezerPlaylist" scrolling="no" frameborder="0" allowTransparency="true" src="/l_sc" width="480" height="480"></iframe>
 	
 	<div id="dz-root"></div>
 	<div id="controlers">
 		<input type="button" onclick="pll()" id="dzdata" data-dz="{{deezer_adv_songs_ids}}" value="SSS"/>
-		<input type="button" onclick="DZ.player.playTracks(301775); return false;" value="Play Daft Punk - Homework"/>
+		<input type="button" onclick="DZ.player.playAlbum(301775); return false;" value="Play Daft Punk - Homework"/>
 		<br/>
 		<input type="button" onclick="DZ.player.play(); return false;" value="play"/>
 		<input type="button" onclick="DZ.player.pause(); return false;" value="pause"/>
@@ -76,10 +97,11 @@
 		function event_listener_append() {
 			var pre = document.getElementById('event_listener');
 			var line = [];
-			for (var i = 0; i < arguments.length; i++) {
-				line.push(arguments[i]);
+
+			if(arguments[0] == "current_track" ){
+				console.log(arguments);
+				pre.innerHTML = pre.innerHTML + "<strong>" + arguments[2] + "</strong> - " + arguments[3] + "\n";
 			}
-			pre.innerHTML += line.join(' ') + "\n";
 		}
 		function onPlayerLoaded() {
 			$("#controlers input").attr('disabled', false);
@@ -101,4 +123,5 @@
 	    });
 		
 	</script>
+	<pre id="event_listener" style="height:100px;overflow:auto;"></pre>
 </div>
